@@ -9,7 +9,8 @@ namespace SIM.Movement
     public class PlayerMovement : MonoBehaviour
     {
         [SerializeField] float speed = 2f;
-        [SerializeField] Transform directionRepresentation;
+
+        public Vector2 Forward { get; private set; }
 
         PlayerInput input;
         Rigidbody2D rb2d;
@@ -27,14 +28,24 @@ namespace SIM.Movement
 
         private void FixedUpdate()
         {
-            Vector2 finalPosition = (Vector2)transform.position + velocity * Time.fixedDeltaTime;
-            rb2d.MovePosition(finalPosition);
+            // Vector2 finalPosition = (Vector2)transform.position + velocity * Time.fixedDeltaTime;
+            // rb2d.MovePosition(finalPosition);
+
+            rb2d.velocity = velocity;
         }
 
         private void OnMovementChanged(Vector2 movement)
         {
             Vector2 direction = movement.normalized;
             velocity = direction * speed;
+
+            if (direction != Vector2.zero) Forward = direction;
+        }
+
+        private void OnDrawGizmos() {
+            const float LENGTH = 3f;
+            Gizmos.color = Color.green;
+            Gizmos.DrawRay(transform.position, Forward * LENGTH);
         }
     }
 }
