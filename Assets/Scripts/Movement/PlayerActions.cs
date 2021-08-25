@@ -28,7 +28,7 @@ namespace SIM.Movement
         {
             if (TryToInteract(out IInteractable interactable))
             {
-                interactable.Interact();
+                interactable.Interact(out GameObject interactedGameObject);
             }
         }
 

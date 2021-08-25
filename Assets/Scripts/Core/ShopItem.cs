@@ -4,27 +4,25 @@ using UnityEngine;
 
 namespace SIM.Core
 {
-    public class Clothing : MonoBehaviour, IInteractable, IPurchasable
+    public class ShopItem : MonoBehaviour, IInteractable, IPurchasable
     {
+        [SerializeField] bool isForSale = true;
         [SerializeField] float price = 100f;
 
-        bool canEquip;
-        bool canBuy;
-
-        public void Interact()
+        public void Interact(out GameObject interactedGameObject)
         {
-            if (canBuy) { ShowBuyWindow(); }
-            else if (canEquip) { Equip(); }
-        }
+            interactedGameObject = null;
 
-        private void Equip()
-        {
-            print("Equipping " + name);
+            if (isForSale)
+            {
+                interactedGameObject = gameObject;
+                ShowBuyWindow();
+            }
         }
 
         private void ShowBuyWindow()
         {
-            print("<WINDOW APPEARS> Do you want to buy " + name + "?");
+            print("<WINDOW APPEARS> Do you want to buy " + name + " for $" + price + "?");
         }
 
         public float GetPrice()
