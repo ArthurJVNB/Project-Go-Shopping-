@@ -5,30 +5,25 @@ using SIM.Control;
 
 namespace SIM.Movement
 {
-    [RequireComponent(typeof(PlayerControl))]
+    [RequireComponent(typeof(PlayerInput))]
     public class PlayerMovement : MonoBehaviour
     {
         [SerializeField] float speed = 2f;
+        [SerializeField] Transform directionRepresentation;
 
-        PlayerControl control;
+        PlayerInput input;
         Rigidbody2D rb2d;
         Vector2 velocity;
 
         private void Awake()
         {
-            control = GetComponent<PlayerControl>();
+            input = GetComponent<PlayerInput>();
             rb2d = GetComponent<Rigidbody2D>();
         }
 
-        private void OnEnable()
-        {
-            control.onPlayerMovement += OnMovementChanged;
-        }
+        private void OnEnable() => input.onPlayerMovement += OnMovementChanged;
 
-        private void OnDisable()
-        {
-            control.onPlayerMovement -= OnMovementChanged;
-        }
+        private void OnDisable() => input.onPlayerMovement -= OnMovementChanged;
 
         private void FixedUpdate()
         {
@@ -40,8 +35,6 @@ namespace SIM.Movement
         {
             Vector2 direction = movement.normalized;
             velocity = direction * speed;
-            // Vector2 finalPosition = (Vector2)transform.position + velocity;
-            // rb2d.MovePosition(finalPosition);
         }
     }
 }
