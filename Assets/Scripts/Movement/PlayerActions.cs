@@ -6,6 +6,7 @@ using UnityEngine;
 namespace SIM.Movement
 {
     [RequireComponent(typeof(PlayerInput))]
+    [RequireComponent(typeof(PlayerMovement))]
     public class PlayerActions : MonoBehaviour
     {
         [SerializeField] float maxInteractionDistance = 2f;
