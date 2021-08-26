@@ -527,7 +527,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inventory: {fileID: 0}
   slotsContainer: {fileID: 6518057880778430928}
-  slotTemplate: {fileID: 6518057879978694408}
+  slotTemplate: {fileID: 8602342436778655623}
   moneyText: {fileID: 6518057880544675837}
 --- !u!1 &6518057881824968399
 GameObject:
@@ -613,7 +613,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 7316492436861463373, guid: 0910615045f66b14792a553f4e12d154, type: 3}
       propertyPath: m_Name
-      value: Item template
+      value: Inventory item template
       objectReference: {fileID: 0}
     - target: {fileID: 7316492436861463374, guid: 0910615045f66b14792a553f4e12d154, type: 3}
       propertyPath: m_Pivot.x
@@ -706,3 +706,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7316492436861463374, guid: 0910615045f66b14792a553f4e12d154, type: 3}
   m_PrefabInstance: {fileID: 4611030712943213638}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8602342436778655623 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5232062221597590465, guid: 0910615045f66b14792a553f4e12d154, type: 3}
+  m_PrefabInstance: {fileID: 4611030712943213638}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87aba901a18a2e64fb06e6553108e794, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

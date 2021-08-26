@@ -9,12 +9,15 @@ namespace SIM.UI
 {
     public class InventoryUI : MonoBehaviour
     {
+        public Action<Item> onItemClicked;
+
         [SerializeField] Inventory inventory;
         [SerializeField] Transform slotsContainer;
-        [SerializeField] RectTransform slotTemplate;
+        [SerializeField] InventoryButton slotTemplate;
         [SerializeField] TextMeshProUGUI moneyText;
 
-        private void Awake() {
+        private void Awake()
+        {
             if (!inventory)
             {
                 Debug.LogWarning(typeof(InventoryUI) + " doesn't have a " + typeof(Inventory) +
@@ -29,13 +32,15 @@ namespace SIM.UI
         private void UpdateUI()
         {
             const int CELLS_PER_ROW = 4;
-            
-            float cellSizeX = slotTemplate.rect.width;
-            float cellSizeY = slotTemplate.rect.height;
-            
-            float offsetX = slotTemplate.anchoredPosition.x;
-            float offsetY = slotTemplate.anchoredPosition.y;
-            
+
+            RectTransform template = slotTemplate.GetComponent<RectTransform>();
+
+            float cellSizeX = template.rect.width;
+            float cellSizeY = template.rect.height;
+
+            float offsetX = template.anchoredPosition.x;
+            float offsetY = template.anchoredPosition.y;
+
             int cellsInRow = 0;
             int currentRow = 0;
 
@@ -49,24 +54,35 @@ namespace SIM.UI
             Item[] items = inventory.GetItems();
             for (int i = 0; i < items.Length; i++)
             {
+                Item currentItem = items[i];
+
                 if (cellsInRow >= CELLS_PER_ROW)
                 {
                     cellsInRow = 0;
                     currentRow--; // It goes from top to bottom
                 }
 
-                RectTransform uiItem = Instantiate(slotTemplate, slotsContainer);
+                InventoryButton uiItem = Instantiate(slotTemplate, slotsContainer);
+                RectTransform uiItemRect = uiItem.GetComponent<RectTransform>();
 
                 x = offsetX + cellsInRow * cellSizeX;
                 y = offsetY + currentRow * cellSizeY;
                 Vector2 position = new Vector2(x, y);
 
-                uiItem.anchoredPosition = position;
-                uiItem.Find("Item preview").GetComponent<Image>().sprite = items[i].UIImage;
-                uiItem.gameObject.SetActive(true);
+                uiItemRect.anchoredPosition = position;
+                uiItemRect.Find("Item preview").GetComponent<Image>().sprite = currentItem.UIImage;
+                uiItemRect.gameObject.SetActive(true);
+
+                uiItem.Item = currentItem;
+                uiItem.onClicked += OnItemClicked;
 
                 cellsInRow++;
             }
+        }
+
+        private void OnItemClicked(InventoryButton inventoryItem)
+        {
+            onItemClicked?.Invoke(inventoryItem.Item);
         }
 
         private void ShowMoneyAmount()
@@ -78,7 +94,13 @@ namespace SIM.UI
         {
             foreach (Transform child in slotsContainer)
             {
-                if (child != slotTemplate) Destroy(child.gameObject);
+                InventoryButton item = child.GetComponent<InventoryButton>();
+
+                if (item != slotTemplate)
+                {
+                    item.onClicked -= OnItemClicked;
+                    Destroy(child.gameObject);
+                }
             }
         }
     }
