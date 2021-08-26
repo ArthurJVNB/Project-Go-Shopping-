@@ -26,8 +26,10 @@ namespace SIM.UI
 
         private void UpdateUI()
         {
-            const int CELL_SIZE = 64;
             const int CELLS_PER_ROW = 4;
+            
+            float cellSizeX = slotTemplate.rect.width;
+            float cellSizeY = slotTemplate.rect.height;
             
             float offsetX = slotTemplate.anchoredPosition.x;
             float offsetY = slotTemplate.anchoredPosition.y;
@@ -53,8 +55,8 @@ namespace SIM.UI
 
                 RectTransform uiItem = Instantiate(slotTemplate, slotsContainer);
 
-                x = offsetX + cellsInRow * CELL_SIZE;
-                y = offsetY + currentRow * CELL_SIZE;
+                x = offsetX + cellsInRow * cellSizeX;
+                y = offsetY + currentRow * cellSizeY;
                 Vector2 position = new Vector2(x, y);
 
                 uiItem.anchoredPosition = position;
