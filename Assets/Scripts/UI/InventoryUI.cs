@@ -3,6 +3,7 @@ using SIM.Core;
 using System.Collections.Generic;
 using System;
 using UnityEngine.UI;
+using TMPro;
 
 namespace SIM.UI
 {
@@ -11,6 +12,7 @@ namespace SIM.UI
         [SerializeField] Inventory inventory;
         [SerializeField] Transform slotsContainer;
         [SerializeField] RectTransform slotTemplate;
+        [SerializeField] TextMeshProUGUI moneyText;
 
         private void Awake() {
             if (!inventory)
@@ -69,7 +71,7 @@ namespace SIM.UI
 
         private void ShowMoneyAmount()
         {
-            // throw new NotImplementedException();
+            moneyText.text = inventory.Money.ToString();
         }
 
         private void ClearOldItems()
