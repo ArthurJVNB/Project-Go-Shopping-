@@ -175,6 +175,8 @@ GameObject:
   - component: {fileID: 1260344909174624737}
   - component: {fileID: 2297830210829462522}
   - component: {fileID: 3027617878156351216}
+  - component: {fileID: 3712917436084335767}
+  - component: {fileID: 5535029527087522431}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -245,3 +247,30 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &3712917436084335767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7767659960827664121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c1d7ad7c95d2eb40a1f2bf3008791aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moneyAmount: 0
+  moneyPrefab: {fileID: 0}
+  items: []
+--- !u!114 &5535029527087522431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7767659960827664121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76d6690496395c4468dd108762bdca0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
