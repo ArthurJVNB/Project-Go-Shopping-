@@ -5,27 +5,39 @@ namespace SIM.Core
     [RequireComponent(typeof(Inventory))]
     public class Trader : MonoBehaviour
     {
-        Inventory inventory;
+        public Inventory Inventory { get; private set; }
 
-
-        private void Start()
+        private void Awake()
         {
-            inventory = GetComponent<Inventory>();
-            UpdateOwnership();
+            Inventory = GetComponent<Inventory>();
+            // UpdateOwnership(); // inventory already calls onInventoryChanged on Start().
         }
 
-        private void OnEnable() => inventory.onInventoryChanged += UpdateOwnership;
+        private void OnEnable() => Inventory.onInventoryChanged += UpdateOwnership;
 
-        private void OnDisable() => inventory.onInventoryChanged -= UpdateOwnership;
+        private void OnDisable() => Inventory.onInventoryChanged -= UpdateOwnership;
 
         public bool Trade(Item item, Trader to)
         {
-           
+            bool result = false;
+
+            if (Inventory.Contains(item))
+            {
+                if (to.Inventory.SubtractMoney(item.Price))
+                {
+                    Inventory.AddMoney(item.Price);
+                    Inventory.Remove(item);
+                    to.Inventory.Add(item);
+                    result = true;
+                }
+            }
+
+            return result;
         }
 
         private void UpdateOwnership()
         {
-            Item[] items = inventory.GetItems();
+            Item[] items = Inventory.GetItems();
             foreach (Item item in items)
             {
                 item.SetOwner(this);

@@ -8,16 +8,28 @@ namespace SIM.Control
     public class PlayerInput : MonoBehaviour
     {
         public Action<Vector2> onPlayerMovement;
-        public Action onPlayerPressedInteraction;
+        public Action onPlayerPressedConfirm;
+        public Action onPlayerPressedCancel;
+        public Action onPlayerPressedToInteract;
 
         private void Update()
         {
             Vector2 direction = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
             onPlayerMovement?.Invoke(direction);
 
-            if (Input.GetButtonDown("Fire1"))
+            if (Input.GetButtonDown("Interact"))
             {
-                onPlayerPressedInteraction?.Invoke();
+                onPlayerPressedToInteract?.Invoke();
+            }
+
+            if (Input.GetButtonDown("Submit"))
+            {
+                onPlayerPressedConfirm?.Invoke();
+            }
+
+            if (Input.GetButtonDown("Cancel"))
+            {
+                onPlayerPressedCancel?.Invoke();
             }
         }
     }

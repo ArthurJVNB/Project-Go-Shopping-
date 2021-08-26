@@ -45,6 +45,11 @@ namespace SIM.Core
             return true;
         }
 
+        public bool Contains(Item item)
+        {
+            return items.Contains(item);
+        }
+
         public Item[] GetItems()
         {
             return items.ToArray();

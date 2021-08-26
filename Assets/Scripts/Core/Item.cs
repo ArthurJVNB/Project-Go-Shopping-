@@ -11,28 +11,25 @@ namespace SIM.Core
 
         public bool IsStackable { get { return isStackable; } }
         public Sprite UIImage { get { return uiImage; } }
+        public Trader Owner { get; private set; }
+        public bool IsForSale { get { return isForSale; } }
+        public float Price { get { return GetPrice(); } }
 
         [SerializeField] bool isStackable;
         [SerializeField] Sprite uiImage;
         [SerializeField] bool isForSale = true;
         [SerializeField] float price = 100f;
 
-        public Trader Owner { get; private set; }
-
         public void Interact(GameObject whoInteracts, out GameObject interactedGameObject)
         {
-            interactedGameObject = null;
+            interactedGameObject = gameObject;
 
-            if (isForSale && whoInteracts.CompareTag("Player"))
-            {
-                interactedGameObject = gameObject;
-                ShowBuyWindow();
-            }
-        }
+            // interactedGameObject = null;
 
-        private void ShowBuyWindow()
-        {
-            print("<WINDOW APPEARS> Do you want to buy " + name + " for $" + price + "?");
+            // if (isForSale && whoInteracts.CompareTag("Player"))
+            // {
+            //     interactedGameObject = gameObject;
+            // }
         }
 
         public Trader GetOwner()
@@ -60,9 +57,11 @@ namespace SIM.Core
             if (!isForSale)
             {
                 result = false;
+                print(name + " is not for sale!");
             }
             else if (Owner)
             {
+                print(name + " has owner (" + Owner.name + ")");
                 result = Owner.Trade(this, buyer);
                 if (result) boughtItem = this;
             }
@@ -71,8 +70,10 @@ namespace SIM.Core
                 Inventory buyersInventory = buyer.GetComponent<Inventory>();
                 result = buyersInventory.SubtractMoney(price);
                 if (result) boughtItem = this;
+                
             }
 
+            print("Trade " + (result ? "was successful" : "has failed"));
             return result;
 
             // Inventory ownersInventory = null;
