@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,17 +7,47 @@ namespace SIM.Core
 {
     public class Inventory : MonoBehaviour
     {
-        [SerializeField] float money;
-        [SerializeField] List<GameObject> items = new List<GameObject>();
+        public Action onInventoryChanged;
+        public float Money { get { return moneyAmount; } }
 
-        public void Add(GameObject item)
+        [SerializeField] float moneyAmount;
+        [SerializeField] Item moneyPrefab;
+        [SerializeField] List<Item> items = new List<Item>();
+
+        private void Start()
         {
-            items.Add(item);
+            onInventoryChanged?.Invoke();
         }
 
-        public bool Remove(GameObject item)
+        public void Add(Item item)
         {
-            return items.Remove(item);
+            items.Add(item);
+            onInventoryChanged?.Invoke();
+        }
+
+        public bool Remove(Item item)
+        {
+            bool result = items.Remove(item);
+            onInventoryChanged?.Invoke();
+            return result;
+        }
+
+        public void AddMoney(float value)
+        {
+            moneyAmount += value;
+        }
+
+        public bool SubtractMoney(float value)
+        {
+            if (moneyAmount - value < 0) return false;
+
+            moneyAmount -= value;
+            return true;
+        }
+
+        public Item[] GetItems()
+        {
+            return items.ToArray();
         }
     }
 }
