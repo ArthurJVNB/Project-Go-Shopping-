@@ -5,7 +5,7 @@ using System;
 
 namespace SIM.Control
 {
-    public class PlayerInput : MonoBehaviour
+    public class PlayerControl : MonoBehaviour
     {
         public Action<Vector2> onPlayerMovement;
         public Action onPlayerPressedConfirm;

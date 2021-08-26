@@ -5,20 +5,20 @@ using UnityEngine;
 
 namespace SIM.Movement
 {
-    [RequireComponent(typeof(PlayerInput))]
+    [RequireComponent(typeof(PlayerControl))]
     public class PlayerMovement : MonoBehaviour
     {
         [SerializeField] float speed = 2f;
 
         public Vector2 Forward { get; private set; }
 
-        PlayerInput input;
+        PlayerControl input;
         Rigidbody2D rb2d;
         Vector2 velocity;
 
         private void Awake()
         {
-            input = GetComponent<PlayerInput>();
+            input = GetComponent<PlayerControl>();
             rb2d = GetComponent<Rigidbody2D>();
         }
 

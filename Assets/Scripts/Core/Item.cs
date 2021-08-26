@@ -14,11 +14,13 @@ namespace SIM.Core
         public Trader Owner { get; private set; }
         public bool IsForSale { get { return isForSale; } }
         public float Price { get { return GetPrice(); } }
+        public bool IsInGameWorld { get { return isInGameWorld; } set { SetIsInGameWorld(value); } }
 
         [SerializeField] bool isStackable;
         [SerializeField] Sprite uiImage;
         [SerializeField] bool isForSale = true;
         [SerializeField] float price = 100f;
+        [SerializeField] bool isInGameWorld = true;
 
         public void Interact(GameObject whoInteracts, out GameObject interactedGameObject)
         {
@@ -70,7 +72,6 @@ namespace SIM.Core
                 Inventory buyersInventory = buyer.GetComponent<Inventory>();
                 result = buyersInventory.SubtractMoney(price);
                 if (result) boughtItem = this;
-                
             }
 
             print("Trade " + (result ? "was successful" : "has failed"));
@@ -94,5 +95,10 @@ namespace SIM.Core
             // return false;
         }
 
+        private void SetIsInGameWorld(bool value)
+        {
+            isInGameWorld = value;
+            GetComponent<SpriteRenderer>().enabled = value;
+        }
     }
 }

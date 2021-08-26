@@ -6,18 +6,18 @@ using UnityEngine;
 
 namespace SIM.Movement
 {
-    [RequireComponent(typeof(PlayerInput))]
+    [RequireComponent(typeof(PlayerControl))]
     [RequireComponent(typeof(PlayerMovement))]
     public class PlayerActions : MonoBehaviour
     {
         [SerializeField] float maxInteractionDistance = 2f;
 
-        PlayerInput input;
+        PlayerControl input;
         PlayerMovement movement;
 
         private void Awake()
         {
-            input = GetComponent<PlayerInput>();
+            input = GetComponent<PlayerControl>();
             movement = GetComponent<PlayerMovement>();
         }
 
@@ -45,7 +45,7 @@ namespace SIM.Movement
             if (TryGetInteractable(out IInteractable interactable))
             {
                 interactable.Interact(this.gameObject, out GameObject interactedGameObject);
-                if (interactedGameObject.TryGetComponent<Item>(out Item item) && item.IsForSale)
+                if (interactedGameObject.TryGetComponent<Item>(out Item item) && item.IsForSale && item.IsInGameWorld)
                 {
                     ShowBuyWindow(item);
                     StartCoroutine(ContinuesToBeInRange(item));

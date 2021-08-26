@@ -6,6 +6,6 @@ namespace SIM.Core
 {
     public interface IInteractable
     {
-        void Interact(GameObject whoInteracts, out GameObject interactedGameObject);
+        void Interact(GameObject whoInteracts, out GameObject interacted);
     }
 }
