@@ -12,6 +12,14 @@ namespace SIM.UI
         [SerializeField] Transform slotsContainer;
         [SerializeField] RectTransform slotTemplate;
 
+        private void Awake() {
+            if (!inventory)
+            {
+                Debug.LogWarning(typeof(InventoryUI) + " doesn't have a " + typeof(Inventory) +
+                 " attached to it! Please do this if you want to use " + typeof(InventoryUI));
+            }
+        }
+
         private void OnEnable() => inventory.onInventoryChanged += UpdateUI;
 
         private void OnDisable() => inventory.onInventoryChanged -= UpdateUI;
