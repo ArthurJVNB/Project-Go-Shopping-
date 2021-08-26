@@ -55,6 +55,10 @@ PrefabInstance:
       propertyPath: m_BodyType
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3712917436084335767, guid: 5753825a353075249a17c3f1b5a98570, type: 3}
+      propertyPath: moneyAmount
+      value: 1000
+      objectReference: {fileID: 0}
     - target: {fileID: 5417879299816978711, guid: 5753825a353075249a17c3f1b5a98570, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.7
