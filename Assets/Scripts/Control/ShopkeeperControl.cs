@@ -15,6 +15,7 @@ namespace SIM.Control
             Talking
         }
 
+        public Action onEndedTalking;
         public State CurrentState { get { return currentState; } }
 
         [SerializeField] InventoryUI inventoryUI;
@@ -41,14 +42,6 @@ namespace SIM.Control
         {
             inventoryUI.onItemClicked -= SellToPlayer;
             rangeToContinueTrade.onTriggerExit2D -= HideInventoryIfPlayerLeft;
-        }
-
-        private void HideInventoryIfPlayerLeft(Collider2D whoTriggered, Collider2D other)
-        {
-            if (other.CompareTag(PLAYER_TAG))
-            {
-                StopTradingState();
-            }
         }
 
         public void Interact(GameObject whoInteracts, out GameObject interacted)
@@ -101,8 +94,17 @@ namespace SIM.Control
 
         private void StopTradingState()
         {
+            onEndedTalking?.Invoke();
             inventoryUI.HideUI();
             currentState = State.Default;
+        }
+
+        private void HideInventoryIfPlayerLeft(Collider2D whoTriggered, Collider2D other)
+        {
+            if (other.CompareTag(PLAYER_TAG))
+            {
+                StopTradingState();
+            }
         }
 
         private void UpdateDistanceFromPlayer()

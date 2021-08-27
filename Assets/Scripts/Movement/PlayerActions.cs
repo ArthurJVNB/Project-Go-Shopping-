@@ -2,31 +2,37 @@ using System;
 using System.Collections;
 using SIM.Control;
 using SIM.Core;
+using SIM.UI;
 using UnityEngine;
 
 namespace SIM.Movement
 {
     [RequireComponent(typeof(PlayerControl))]
     [RequireComponent(typeof(PlayerMovement))]
+    [RequireComponent(typeof(Trader))]
 
     public class PlayerActions : MonoBehaviour
     {
         enum State
         {
             Default,
-            WaitingConfirmation
+            TalkingToShopkeeper
         }
 
         [SerializeField] float maxInteractionDistance = 2f;
+        [SerializeField] InventoryUI inventoryUI;
 
         PlayerControl input;
         PlayerMovement movement;
+        Trader trader;
         State currentState = State.Default;
+        ShopkeeperControl shopkeeperImTalking = null;
 
         private void Awake()
         {
             input = GetComponent<PlayerControl>();
             movement = GetComponent<PlayerMovement>();
+            trader = GetComponent<Trader>();
         }
 
         // private void OnEnable()
@@ -41,11 +47,20 @@ namespace SIM.Movement
         //     input.onPlayerPressedConfirm -= OnPlayerPressedToConfirm;
         // }
 
-        private void OnEnable() => input.onPlayerPressedToInteract += OnPlayerPressedToInteract;
+        private void OnEnable()
+        {
+            inventoryUI.onItemClicked += InteractWithMyItem;
+            input.onPlayerPressedToInteract += OnPlayerPressedToInteract;
+        }
 
-        private void OnDisable() => input.onPlayerPressedToInteract -= OnPlayerPressedToInteract;
+        private void OnDisable()
+        {
+            inventoryUI.onItemClicked -= InteractWithMyItem;
+            input.onPlayerPressedToInteract -= OnPlayerPressedToInteract;
+        }
 
-        private void LateUpdate() {
+        private void LateUpdate()
+        {
             if (TryGetInteractable(out IInteractable interactable))
             {
                 interactable.ShowHint();
@@ -76,6 +91,13 @@ namespace SIM.Movement
             if (TryGetInteractable(out IInteractable interactable))
             {
                 interactable.Interact(this.gameObject, out GameObject interactedGameObject);
+                if (interactedGameObject.TryGetComponent<ShopkeeperControl>(out ShopkeeperControl shopkeeper))
+                {
+                    if (shopkeeper.CurrentState == ShopkeeperControl.State.Talking)
+                    {
+                        StartTalkingToShopkeeperState(shopkeeper);
+                    }
+                }
                 // InteractWithWorldItem(interactedGameObject);
             }
         }
@@ -137,6 +159,56 @@ namespace SIM.Movement
             Debug.DrawRay(transform.position, direction * maxInteractionDistance, Color.yellow);
             interactable = null;
             return false;
+        }
+
+        private void InteractWithMyItem(Item item)
+        {
+            if (currentState == State.Default)
+            {
+                Equip(item);
+                return;
+            }
+
+            if (currentState == State.TalkingToShopkeeper)
+            {
+                TryToSell(item);
+            }
+        }
+
+        private void Equip(Item item)
+        {
+            Debug.LogWarning("Equip(Item item) not implemented yet.");
+        }
+
+        private bool TryToSell(Item myItem)
+        {
+            bool result = false;
+
+            if (shopkeeperImTalking)
+            {
+                if (shopkeeperImTalking.TryGetComponent<Trader>(out Trader otherTrader))
+                {
+                    result = trader.Trade(myItem, otherTrader);
+                }
+            }
+
+            return result;
+        }
+
+        private void StartTalkingToShopkeeperState(ShopkeeperControl shopkeeper)
+        {
+            currentState = State.TalkingToShopkeeper;
+
+            shopkeeper.onEndedTalking += StopTalkingToShopkeeperState;
+            shopkeeperImTalking = shopkeeper;
+        }
+
+        private void StopTalkingToShopkeeperState()
+        {
+            currentState = State.Default;
+
+            shopkeeperImTalking.onEndedTalking -= StopTalkingToShopkeeperState;
+            shopkeeperImTalking = null;
         }
 
         // private void OnDrawGizmos()

@@ -351,5 +351,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c576872d3a180e49a77f5d94030d9f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeToHide: 0.5
+  timeToHide: 0.1
   myText: {fileID: 6669154267724235644}
