@@ -29,17 +29,21 @@ namespace SIM.Movement
             movement = GetComponent<PlayerMovement>();
         }
 
-        private void OnEnable()
-        {
-            input.onPlayerPressedToInteract += OnPlayerPressedToInteract;
-            input.onPlayerPressedConfirm += OnPlayerPressedToConfirm;
-        }
+        // private void OnEnable()
+        // {
+        //     input.onPlayerPressedToInteract += OnPlayerPressedToInteract;
+        //     input.onPlayerPressedConfirm += OnPlayerPressedToConfirm;
+        // }
 
-        private void OnDisable()
-        {
-            input.onPlayerPressedToInteract -= OnPlayerPressedToInteract;
-            input.onPlayerPressedConfirm -= OnPlayerPressedToConfirm;
-        }
+        // private void OnDisable()
+        // {
+        //     input.onPlayerPressedToInteract -= OnPlayerPressedToInteract;
+        //     input.onPlayerPressedConfirm -= OnPlayerPressedToConfirm;
+        // }
+
+        private void OnEnable() => input.onPlayerPressedToInteract += OnPlayerPressedToInteract;
+
+        private void OnDisable() => input.onPlayerPressedToInteract -= OnPlayerPressedToInteract;
 
         private void LateUpdate() {
             if (TryGetInteractable(out IInteractable interactable))
@@ -48,22 +52,22 @@ namespace SIM.Movement
             }
         }
 
-        private void OnPlayerPressedToConfirm()
-        {
-            if (currentState != State.WaitingConfirmation) return;
+        // private void OnPlayerPressedToConfirm()
+        // {
+        //     if (currentState != State.WaitingConfirmation) return;
 
-            if (TryGetInteractable(out IInteractable interactable))
-            {
-                interactable.Interact(gameObject, out GameObject interacted);
-                if (interacted.TryGetComponent<Item>(out Item item))
-                {
-                    if (item.TryToTrade(this.GetComponent<Trader>(), out Item boughtItem))
-                    {
-                        print("You bought " + boughtItem.name + "!");
-                    }
-                }
-            }
-        }
+        //     if (TryGetInteractable(out IInteractable interactable))
+        //     {
+        //         interactable.Interact(gameObject, out GameObject interacted);
+        //         if (interacted.TryGetComponent<Item>(out Item item))
+        //         {
+        //             if (item.TryToTrade(this.GetComponent<Trader>(), out Item boughtItem))
+        //             {
+        //                 print("You bought " + boughtItem.name + "!");
+        //             }
+        //         }
+        //     }
+        // }
 
         private void OnPlayerPressedToInteract()
         {
@@ -125,12 +129,12 @@ namespace SIM.Movement
 
                 if (hit.transform.TryGetComponent<IInteractable>(out interactable))
                 {
-                    Debug.DrawLine(transform.position, hit.transform.position, Color.blue, .25f);
+                    Debug.DrawLine(transform.position, hit.point, Color.blue, .25f);
                     return true;
                 }
             }
 
-            Debug.DrawRay(transform.position, direction * maxInteractionDistance, Color.yellow, .25f);
+            Debug.DrawRay(transform.position, direction * maxInteractionDistance, Color.yellow);
             interactable = null;
             return false;
         }

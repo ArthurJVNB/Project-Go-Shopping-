@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using SIM.UI;
 using UnityEngine;
 
 namespace SIM.Core
@@ -19,23 +20,17 @@ namespace SIM.Core
         [SerializeField] Sprite uiImage;
         [SerializeField] Sprite worldImage;
         [SerializeField] Sprite equippedImage;
+        [SerializeField] Hint hintUI;
         [SerializeField] bool isStackable;
         [SerializeField] bool isForSale = true;
         [SerializeField] float price = 100f;
         [SerializeField] bool isInGameWorld = true;
-        [SerializeField] RangeDetector cancelTradeRange;
 
         const string PLAYER_TAG = "Player";
-        int timesPlayerInteractedWithMe = 0;
 
-        private void OnEnable()
+        private void Awake()
         {
-            cancelTradeRange.onTriggerExit2D += ResetTimesPlayerInteractedWithMe;
-        }
-
-        private void OnDisable()
-        {
-            cancelTradeRange.onTriggerExit2D -= ResetTimesPlayerInteractedWithMe;
+            UpdateHintText();
         }
 
         public void Interact(GameObject whoInteracts, out GameObject interactedGameObject)
@@ -66,10 +61,12 @@ namespace SIM.Core
             //     interactedGameObject = gameObject;
             // }
         }
-        
+
         public void ShowHint()
         {
-            print("<WINDOW APPEARS> Do you want to buy " + name + " for $" + Price + "?");
+            // print("<WINDOW APPEARS> Do you want to buy " + name + " for $" + Price + "?");
+            // Buy T-shirt for $1000
+            hintUI.ShowUI();
         }
 
         public Trader GetOwner()
@@ -133,21 +130,10 @@ namespace SIM.Core
             // return false;
         }
 
-        private void ShowBuyWindow()
+        private void UpdateHintText()
         {
-            
+            hintUI.Text = "Buy " + name + " for $" + Price;
         }
-
-        private void ResetTimesPlayerInteractedWithMe(Collider2D _, Collider2D other)
-        {
-            if (other.CompareTag(PLAYER_TAG)) ResetTimesPlayerInteractedWithMe();
-        }
-
-        private void ResetTimesPlayerInteractedWithMe()
-        {
-            timesPlayerInteractedWithMe = 0;
-        }
-        
 
         private void SetIsInGameWorld(bool value)
         {

@@ -406,6 +406,7 @@ GameObject:
   - component: {fileID: 6518057880966498386}
   - component: {fileID: 6518057880966498384}
   - component: {fileID: 6518057880966498387}
+  - component: {fileID: 8515518484382926523}
   m_Layer: 5
   m_Name: Money border
   m_TagString: Untagged
@@ -470,6 +471,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8515518484382926523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6518057880966498389}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 1, y: -1}
+  m_UseGraphicAlpha: 1
 --- !u!1 &6518057881271206038
 GameObject:
   m_ObjectHideFlags: 0
@@ -540,6 +556,7 @@ GameObject:
   - component: {fileID: 6518057881824968396}
   - component: {fileID: 6518057881824968394}
   - component: {fileID: 6518057881824968397}
+  - component: {fileID: 2795921401892378924}
   m_Layer: 5
   m_Name: Inventory border
   m_TagString: Untagged
@@ -604,6 +621,21 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2795921401892378924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6518057881824968399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1001 &4611030712943213638
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -701,11 +733,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0910615045f66b14792a553f4e12d154, type: 3}
---- !u!224 &6518057879978694408 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 7316492436861463374, guid: 0910615045f66b14792a553f4e12d154, type: 3}
-  m_PrefabInstance: {fileID: 4611030712943213638}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &8602342436778655623 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5232062221597590465, guid: 0910615045f66b14792a553f4e12d154, type: 3}
@@ -717,3 +744,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87aba901a18a2e64fb06e6553108e794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!224 &6518057879978694408 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7316492436861463374, guid: 0910615045f66b14792a553f4e12d154, type: 3}
+  m_PrefabInstance: {fileID: 4611030712943213638}
+  m_PrefabAsset: {fileID: 0}

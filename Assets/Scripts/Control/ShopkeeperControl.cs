@@ -9,18 +9,22 @@ namespace SIM.Control
     [RequireComponent(typeof(Trader))]
     public class ShopkeeperControl : MonoBehaviour, IInteractable
     {
-        enum State
+        public enum State
         {
             Default,
             Talking
         }
 
+        public State CurrentState { get { return currentState; } }
+
         [SerializeField] InventoryUI inventoryUI;
         [SerializeField] RangeDetector rangeToContinueTrade;
+        [SerializeField] Hint hintUI;
 
         const string PLAYER_TAG = "Player";
         Trader trader;
         State currentState = State.Default;
+        float distanceFromPlayer;
 
         private void Awake()
         {
@@ -43,8 +47,7 @@ namespace SIM.Control
         {
             if (other.CompareTag(PLAYER_TAG))
             {
-                currentState = State.Default;
-                inventoryUI.HideUI();
+                StopTradingState();
             }
         }
 
@@ -57,15 +60,13 @@ namespace SIM.Control
             {
                 if (currentState == State.Default)
                 {
-                    inventoryUI.ShowUI();
-                    currentState = State.Talking;
+                    StartTradingState();
                     return;
                 }
 
                 if (currentState == State.Talking)
                 {
-                    inventoryUI.HideUI();
-                    currentState = State.Default;
+                    StopTradingState();
                     return;
                 }
 
@@ -82,7 +83,33 @@ namespace SIM.Control
 
         public void ShowHint()
         {
-            if (currentState == State.Default) print("<HINT> Talk");
+            if (currentState == State.Default) hintUI.ShowUI();
+        }
+
+        private void HideHint()
+        {
+            hintUI.gameObject.SetActive(false);
+        }
+
+        private void StartTradingState()
+        {
+            HideHint();
+            UpdateDistanceFromPlayer();
+            inventoryUI.ShowUI();
+            currentState = State.Talking;
+        }
+
+        private void StopTradingState()
+        {
+            inventoryUI.HideUI();
+            currentState = State.Default;
+        }
+
+        private void UpdateDistanceFromPlayer()
+        {
+            Vector3 playerPosition = GameObject.FindGameObjectWithTag(PLAYER_TAG).transform.position;
+            distanceFromPlayer = Vector3.Distance(playerPosition, transform.position);
+            print("Distance from player: " + distanceFromPlayer);
         }
 
         private void SellToPlayer(Item item)
