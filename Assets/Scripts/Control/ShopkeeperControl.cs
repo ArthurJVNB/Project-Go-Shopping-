@@ -9,7 +9,9 @@ namespace SIM.Control
     public class ShopkeeperControl : MonoBehaviour, IInteractable
     {
         [SerializeField] InventoryUI inventoryUI;
+        [SerializeField] float rangeToContinueTrade = 2f;
 
+        const string PLAYER_TAG = "Player";
         Trader trader;
 
         private void Awake()
@@ -21,19 +23,27 @@ namespace SIM.Control
 
         private void OnDisable() => inventoryUI.onItemClicked -= SellToPlayer;
 
+        private void OnTriggerExit2D(Collider2D other) {
+            if (other.CompareTag(PLAYER_TAG))
+            {
+                inventoryUI.HideUI();
+            }
+        }
+
         public void Interact(GameObject whoInteracts, out GameObject interacted)
         {
             interacted = gameObject;
             print("<INVENTORY APPEARS> I supply only the finest goods");
 
-            if (whoInteracts.CompareTag("Player"))
+            if (whoInteracts.CompareTag(PLAYER_TAG))
             {
-                Trader player = whoInteracts.GetComponent<Trader>();
-                Item itemFromPlayer = player.Inventory.GetItems()[0];
-                if (itemFromPlayer)
-                {
-                    player.Trade(itemFromPlayer, this.trader);
-                }
+                inventoryUI.SwitchUI();
+                // Trader player = whoInteracts.GetComponent<Trader>();
+                // Item itemFromPlayer = player.Inventory.GetItems()[0];
+                // if (itemFromPlayer)
+                // {
+                //     player.Trade(itemFromPlayer, this.trader);
+                // }
             }
         }
 

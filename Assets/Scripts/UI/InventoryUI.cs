@@ -29,6 +29,23 @@ namespace SIM.UI
 
         private void OnDisable() => inventory.onInventoryChanged -= UpdateUI;
 
+        public void ShowUI()
+        {
+            UpdateUI();
+            gameObject.SetActive(true);
+        }
+
+        public void HideUI()
+        {
+            gameObject.SetActive(false);
+        }
+
+        public void SwitchUI()
+        {
+            if (gameObject.activeInHierarchy) HideUI();
+            else ShowUI();
+        }
+
         private void UpdateUI()
         {
             const int CELLS_PER_ROW = 4;
@@ -49,7 +66,7 @@ namespace SIM.UI
 
             ClearOldItems();
 
-            ShowMoneyAmount();
+            UpdateMoneyAmount();
 
             Item[] items = inventory.GetItems();
             for (int i = 0; i < items.Length; i++)
@@ -85,7 +102,7 @@ namespace SIM.UI
             onItemClicked?.Invoke(inventoryItem.Item);
         }
 
-        private void ShowMoneyAmount()
+        private void UpdateMoneyAmount()
         {
             moneyText.text = inventory.Money.ToString();
         }
