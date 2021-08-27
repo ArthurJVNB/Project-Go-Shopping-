@@ -16,8 +16,10 @@ namespace SIM.Core
         public float Price { get { return GetPrice(); } }
         public bool IsInGameWorld { get { return isInGameWorld; } set { SetIsInGameWorld(value); } }
 
-        [SerializeField] bool isStackable;
         [SerializeField] Sprite uiImage;
+        [SerializeField] Sprite worldImage;
+        [SerializeField] Sprite equippedImage;
+        [SerializeField] bool isStackable;
         [SerializeField] bool isForSale = true;
         [SerializeField] float price = 100f;
         [SerializeField] bool isInGameWorld = true;

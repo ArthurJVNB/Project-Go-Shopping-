@@ -2,6 +2,7 @@ using UnityEngine;
 using SIM.Core;
 using SIM.UI;
 using UnityEngine.UI;
+using System;
 
 namespace SIM.Control
 {
@@ -9,7 +10,7 @@ namespace SIM.Control
     public class ShopkeeperControl : MonoBehaviour, IInteractable
     {
         [SerializeField] InventoryUI inventoryUI;
-        [SerializeField] float rangeToContinueTrade = 2f;
+        [SerializeField] RangeDetector rangeToContinueTrade;
 
         const string PLAYER_TAG = "Player";
         Trader trader;
@@ -19,11 +20,20 @@ namespace SIM.Control
             trader = GetComponent<Trader>();
         }
 
-        private void OnEnable() => inventoryUI.onItemClicked += SellToPlayer;
+        private void OnEnable()
+        {
+            inventoryUI.onItemClicked += SellToPlayer;
+            rangeToContinueTrade.onTriggerExit2D += HideInventoryIfPlayerLeft;
+        }
 
-        private void OnDisable() => inventoryUI.onItemClicked -= SellToPlayer;
+        private void OnDisable()
+        {
+            inventoryUI.onItemClicked -= SellToPlayer;
+            rangeToContinueTrade.onTriggerExit2D -= HideInventoryIfPlayerLeft;
+        }
 
-        private void OnTriggerExit2D(Collider2D other) {
+        private void HideInventoryIfPlayerLeft(Collider2D whoTriggered, Collider2D other)
+        {
             if (other.CompareTag(PLAYER_TAG))
             {
                 inventoryUI.HideUI();
