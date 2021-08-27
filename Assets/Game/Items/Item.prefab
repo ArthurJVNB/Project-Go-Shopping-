@@ -144,7 +144,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa19eb9440c9cef4a9372a28a65ccc8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isStackable: 0
   uiImage: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
+  worldImage: {fileID: 0}
+  equippedImage: {fileID: 0}
+  isStackable: 0
   isForSale: 1
   price: 100
+  isInGameWorld: 1

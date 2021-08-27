@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5070938114633039466}
   - component: {fileID: 2621026713230351754}
   - component: {fileID: 1637113511959387395}
+  - component: {fileID: 7380712996614748117}
   m_Layer: 0
   m_Name: Shop Wall (outside)
   m_TagString: Untagged
@@ -131,3 +132,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &7380712996614748117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5198460509363445784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 672d3633d72b1b043ad43528b1d87702, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isStatic: 1
+  useLocalScaleY: 1
+  offsetY: -0.5

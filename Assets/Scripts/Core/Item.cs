@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using SIM.UI;
 using UnityEngine;
 
 namespace SIM.Core
@@ -16,15 +17,42 @@ namespace SIM.Core
         public float Price { get { return GetPrice(); } }
         public bool IsInGameWorld { get { return isInGameWorld; } set { SetIsInGameWorld(value); } }
 
-        [SerializeField] bool isStackable;
         [SerializeField] Sprite uiImage;
+        [SerializeField] Sprite worldImage;
+        [SerializeField] Sprite equippedImage;
+        [SerializeField] Hint hintUI;
+        [SerializeField] bool isStackable;
         [SerializeField] bool isForSale = true;
         [SerializeField] float price = 100f;
         [SerializeField] bool isInGameWorld = true;
 
+        const string PLAYER_TAG = "Player";
+
+        private void Awake()
+        {
+            UpdateHintText();
+        }
+
         public void Interact(GameObject whoInteracts, out GameObject interactedGameObject)
         {
             interactedGameObject = gameObject;
+
+            if (whoInteracts.CompareTag(PLAYER_TAG) && isForSale)
+            {
+                TryToTrade(whoInteracts.GetComponent<Trader>(), out Item _);
+
+                // timesPlayerInteractedWithMe++;
+
+                // if (timesPlayerInteractedWithMe == 1)
+                // {
+                //     ShowBuyWindow();
+                // }
+                // else if (timesPlayerInteractedWithMe > 1)
+                // {
+                //     ResetTimesPlayerInteractedWithMe();
+                //     TryToTrade(whoInteracts.GetComponent<Trader>(), out Item _);
+                // }
+            }
 
             // interactedGameObject = null;
 
@@ -32,6 +60,13 @@ namespace SIM.Core
             // {
             //     interactedGameObject = gameObject;
             // }
+        }
+
+        public void ShowHint()
+        {
+            // print("<WINDOW APPEARS> Do you want to buy " + name + " for $" + Price + "?");
+            // Buy T-shirt for $1000
+            hintUI.ShowUI();
         }
 
         public Trader GetOwner()
@@ -93,6 +128,11 @@ namespace SIM.Core
 
             // boughtItem = null;
             // return false;
+        }
+
+        private void UpdateHintText()
+        {
+            hintUI.Text = "Buy " + name + " for $" + Price;
         }
 
         private void SetIsInGameWorld(bool value)
