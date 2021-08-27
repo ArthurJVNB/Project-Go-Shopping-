@@ -35,18 +35,6 @@ namespace SIM.Movement
             trader = GetComponent<Trader>();
         }
 
-        // private void OnEnable()
-        // {
-        //     input.onPlayerPressedToInteract += OnPlayerPressedToInteract;
-        //     input.onPlayerPressedConfirm += OnPlayerPressedToConfirm;
-        // }
-
-        // private void OnDisable()
-        // {
-        //     input.onPlayerPressedToInteract -= OnPlayerPressedToInteract;
-        //     input.onPlayerPressedConfirm -= OnPlayerPressedToConfirm;
-        // }
-
         private void OnEnable()
         {
             inventoryUI.onItemClicked += InteractWithMyItem;
@@ -67,27 +55,8 @@ namespace SIM.Movement
             }
         }
 
-        // private void OnPlayerPressedToConfirm()
-        // {
-        //     if (currentState != State.WaitingConfirmation) return;
-
-        //     if (TryGetInteractable(out IInteractable interactable))
-        //     {
-        //         interactable.Interact(gameObject, out GameObject interacted);
-        //         if (interacted.TryGetComponent<Item>(out Item item))
-        //         {
-        //             if (item.TryToTrade(this.GetComponent<Trader>(), out Item boughtItem))
-        //             {
-        //                 print("You bought " + boughtItem.name + "!");
-        //             }
-        //         }
-        //     }
-        // }
-
         private void OnPlayerPressedToInteract()
         {
-            // if (currentState != State.Default) return;
-
             if (TryGetInteractable(out IInteractable interactable))
             {
                 interactable.Interact(this.gameObject, out GameObject interactedGameObject);
@@ -98,46 +67,8 @@ namespace SIM.Movement
                         StartTalkingToShopkeeperState(shopkeeper);
                     }
                 }
-                // InteractWithWorldItem(interactedGameObject);
             }
         }
-
-        // private void InteractWithWorldItem(GameObject interactedGameObject)
-        // {
-        //     if (interactedGameObject.TryGetComponent<Item>(out Item item))
-        //     {
-        //         if (item.IsForSale && item.IsInGameWorld)
-        //         {
-        //             ShowBuyWindow(item);
-        //             StartCoroutine(ContinuesToBeInRange(item));
-        //         }
-        //     }
-        // }
-
-        // private void ShowBuyWindow(Item item)
-        // {
-        //     print("<WINDOW APPEARS> Do you want to buy " + item.name + " for $" + item.Price + "?");
-        // }
-
-        // private IEnumerator ContinuesToBeInRange(Item item)
-        // {
-        //     yield return null;
-        //     currentState = State.WaitingConfirmation;
-
-
-        //     // input.onPlayerPressedToInteract -= OnPlayerPressedToInteract;
-        //     // input.onPlayerPressedConfirm += OnPlayerPressedToConfirm;
-
-        //     while (TryGetInteractable(out IInteractable otherItem))
-        //     {
-        //         if (otherItem.Equals(item)) yield return null;
-        //     }
-
-        //     // input.onPlayerPressedToInteract += OnPlayerPressedToInteract;
-        //     // input.onPlayerPressedConfirm -= OnPlayerPressedToConfirm;
-
-        //     currentState = State.Default;
-        // }
 
         private bool TryGetInteractable(out IInteractable interactable)
         {

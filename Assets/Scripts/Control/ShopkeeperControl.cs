@@ -62,15 +62,6 @@ namespace SIM.Control
                     StopTradingState();
                     return;
                 }
-
-                // inventoryUI.SwitchUI();
-
-                // Trader player = whoInteracts.GetComponent<Trader>();
-                // Item itemFromPlayer = player.Inventory.GetItems()[0];
-                // if (itemFromPlayer)
-                // {
-                //     player.Trade(itemFromPlayer, this.trader);
-                // }
             }
         }
 
