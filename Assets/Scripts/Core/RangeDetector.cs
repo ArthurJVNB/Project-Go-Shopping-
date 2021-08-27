@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SIM.Control
+namespace SIM.Core
 {
     public class RangeDetector : MonoBehaviour
     {

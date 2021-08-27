@@ -9,11 +9,18 @@ namespace SIM.Control
     [RequireComponent(typeof(Trader))]
     public class ShopkeeperControl : MonoBehaviour, IInteractable
     {
+        enum State
+        {
+            Default,
+            Talking
+        }
+
         [SerializeField] InventoryUI inventoryUI;
         [SerializeField] RangeDetector rangeToContinueTrade;
 
         const string PLAYER_TAG = "Player";
         Trader trader;
+        State currentState = State.Default;
 
         private void Awake()
         {
@@ -36,6 +43,7 @@ namespace SIM.Control
         {
             if (other.CompareTag(PLAYER_TAG))
             {
+                currentState = State.Default;
                 inventoryUI.HideUI();
             }
         }
@@ -47,7 +55,22 @@ namespace SIM.Control
 
             if (whoInteracts.CompareTag(PLAYER_TAG))
             {
-                inventoryUI.SwitchUI();
+                if (currentState == State.Default)
+                {
+                    inventoryUI.ShowUI();
+                    currentState = State.Talking;
+                    return;
+                }
+
+                if (currentState == State.Talking)
+                {
+                    inventoryUI.HideUI();
+                    currentState = State.Default;
+                    return;
+                }
+
+                // inventoryUI.SwitchUI();
+
                 // Trader player = whoInteracts.GetComponent<Trader>();
                 // Item itemFromPlayer = player.Inventory.GetItems()[0];
                 // if (itemFromPlayer)
@@ -55,6 +78,11 @@ namespace SIM.Control
                 //     player.Trade(itemFromPlayer, this.trader);
                 // }
             }
+        }
+
+        public void ShowHint()
+        {
+            if (currentState == State.Default) print("<HINT> Talk");
         }
 
         private void SellToPlayer(Item item)

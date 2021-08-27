@@ -8,12 +8,20 @@ namespace SIM.Movement
 {
     [RequireComponent(typeof(PlayerControl))]
     [RequireComponent(typeof(PlayerMovement))]
+
     public class PlayerActions : MonoBehaviour
     {
+        enum State
+        {
+            Default,
+            WaitingConfirmation
+        }
+
         [SerializeField] float maxInteractionDistance = 2f;
 
         PlayerControl input;
         PlayerMovement movement;
+        State currentState = State.Default;
 
         private void Awake()
         {
@@ -21,12 +29,29 @@ namespace SIM.Movement
             movement = GetComponent<PlayerMovement>();
         }
 
-        private void OnEnable() => input.onPlayerPressedToInteract += OnPlayerPressedToInteract;
+        private void OnEnable()
+        {
+            input.onPlayerPressedToInteract += OnPlayerPressedToInteract;
+            input.onPlayerPressedConfirm += OnPlayerPressedToConfirm;
+        }
 
-        private void OnDisable() => input.onPlayerPressedToInteract -= OnPlayerPressedToInteract;
+        private void OnDisable()
+        {
+            input.onPlayerPressedToInteract -= OnPlayerPressedToInteract;
+            input.onPlayerPressedConfirm -= OnPlayerPressedToConfirm;
+        }
+
+        private void LateUpdate() {
+            if (TryGetInteractable(out IInteractable interactable))
+            {
+                interactable.ShowHint();
+            }
+        }
 
         private void OnPlayerPressedToConfirm()
         {
+            if (currentState != State.WaitingConfirmation) return;
+
             if (TryGetInteractable(out IInteractable interactable))
             {
                 interactable.Interact(gameObject, out GameObject interacted);
@@ -42,40 +67,56 @@ namespace SIM.Movement
 
         private void OnPlayerPressedToInteract()
         {
+            // if (currentState != State.Default) return;
+
             if (TryGetInteractable(out IInteractable interactable))
             {
                 interactable.Interact(this.gameObject, out GameObject interactedGameObject);
-                if (interactedGameObject.TryGetComponent<Item>(out Item item) && item.IsForSale && item.IsInGameWorld)
-                {
-                    ShowBuyWindow(item);
-                    StartCoroutine(ContinuesToBeInRange(item));
-                }
+                // InteractWithWorldItem(interactedGameObject);
             }
         }
 
-        private void ShowBuyWindow(Item item)
-        {
-            print("<WINDOW APPEARS> Do you want to buy " + item.name + " for $" + item.Price + "?");
-        }
+        // private void InteractWithWorldItem(GameObject interactedGameObject)
+        // {
+        //     if (interactedGameObject.TryGetComponent<Item>(out Item item))
+        //     {
+        //         if (item.IsForSale && item.IsInGameWorld)
+        //         {
+        //             ShowBuyWindow(item);
+        //             StartCoroutine(ContinuesToBeInRange(item));
+        //         }
+        //     }
+        // }
 
-        private IEnumerator ContinuesToBeInRange(Item item)
-        {
-            yield return null;
-            input.onPlayerPressedToInteract -= OnPlayerPressedToInteract;
-            input.onPlayerPressedConfirm += OnPlayerPressedToConfirm;
-            while (TryGetInteractable(out IInteractable otherItem))
-            {
-                if (otherItem.Equals(item)) yield return null;
-            }
-            input.onPlayerPressedToInteract += OnPlayerPressedToInteract;
-            input.onPlayerPressedConfirm -= OnPlayerPressedToConfirm;
-        }
+        // private void ShowBuyWindow(Item item)
+        // {
+        //     print("<WINDOW APPEARS> Do you want to buy " + item.name + " for $" + item.Price + "?");
+        // }
+
+        // private IEnumerator ContinuesToBeInRange(Item item)
+        // {
+        //     yield return null;
+        //     currentState = State.WaitingConfirmation;
+
+
+        //     // input.onPlayerPressedToInteract -= OnPlayerPressedToInteract;
+        //     // input.onPlayerPressedConfirm += OnPlayerPressedToConfirm;
+
+        //     while (TryGetInteractable(out IInteractable otherItem))
+        //     {
+        //         if (otherItem.Equals(item)) yield return null;
+        //     }
+
+        //     // input.onPlayerPressedToInteract += OnPlayerPressedToInteract;
+        //     // input.onPlayerPressedConfirm -= OnPlayerPressedToConfirm;
+
+        //     currentState = State.Default;
+        // }
 
         private bool TryGetInteractable(out IInteractable interactable)
         {
             Vector2 direction = movement.Forward;
             Ray ray = new Ray(transform.position, direction);
-
 
             RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, maxInteractionDistance);
             foreach (RaycastHit2D hit in hits)

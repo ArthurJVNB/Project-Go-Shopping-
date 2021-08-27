@@ -23,10 +23,41 @@ namespace SIM.Core
         [SerializeField] bool isForSale = true;
         [SerializeField] float price = 100f;
         [SerializeField] bool isInGameWorld = true;
+        [SerializeField] RangeDetector cancelTradeRange;
+
+        const string PLAYER_TAG = "Player";
+        int timesPlayerInteractedWithMe = 0;
+
+        private void OnEnable()
+        {
+            cancelTradeRange.onTriggerExit2D += ResetTimesPlayerInteractedWithMe;
+        }
+
+        private void OnDisable()
+        {
+            cancelTradeRange.onTriggerExit2D -= ResetTimesPlayerInteractedWithMe;
+        }
 
         public void Interact(GameObject whoInteracts, out GameObject interactedGameObject)
         {
             interactedGameObject = gameObject;
+
+            if (whoInteracts.CompareTag(PLAYER_TAG) && isForSale)
+            {
+                TryToTrade(whoInteracts.GetComponent<Trader>(), out Item _);
+
+                // timesPlayerInteractedWithMe++;
+
+                // if (timesPlayerInteractedWithMe == 1)
+                // {
+                //     ShowBuyWindow();
+                // }
+                // else if (timesPlayerInteractedWithMe > 1)
+                // {
+                //     ResetTimesPlayerInteractedWithMe();
+                //     TryToTrade(whoInteracts.GetComponent<Trader>(), out Item _);
+                // }
+            }
 
             // interactedGameObject = null;
 
@@ -34,6 +65,11 @@ namespace SIM.Core
             // {
             //     interactedGameObject = gameObject;
             // }
+        }
+        
+        public void ShowHint()
+        {
+            print("<WINDOW APPEARS> Do you want to buy " + name + " for $" + Price + "?");
         }
 
         public Trader GetOwner()
@@ -96,6 +132,22 @@ namespace SIM.Core
             // boughtItem = null;
             // return false;
         }
+
+        private void ShowBuyWindow()
+        {
+            
+        }
+
+        private void ResetTimesPlayerInteractedWithMe(Collider2D _, Collider2D other)
+        {
+            if (other.CompareTag(PLAYER_TAG)) ResetTimesPlayerInteractedWithMe();
+        }
+
+        private void ResetTimesPlayerInteractedWithMe()
+        {
+            timesPlayerInteractedWithMe = 0;
+        }
+        
 
         private void SetIsInGameWorld(bool value)
         {
