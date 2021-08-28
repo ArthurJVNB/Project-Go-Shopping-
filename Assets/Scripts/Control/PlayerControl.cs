@@ -8,8 +8,6 @@ namespace SIM.Control
     public class PlayerControl : MonoBehaviour
     {
         public Action<Vector2> onPlayerMovement;
-        public Action onPlayerPressedConfirm;
-        public Action onPlayerPressedCancel;
         public Action onPlayerPressedToInteract;
 
         private void Update()
@@ -20,16 +18,6 @@ namespace SIM.Control
             if (Input.GetButtonDown("Interact"))
             {
                 onPlayerPressedToInteract?.Invoke();
-            }
-
-            if (Input.GetButtonDown("Submit"))
-            {
-                onPlayerPressedConfirm?.Invoke();
-            }
-
-            if (Input.GetButtonDown("Cancel"))
-            {
-                onPlayerPressedCancel?.Invoke();
             }
         }
     }

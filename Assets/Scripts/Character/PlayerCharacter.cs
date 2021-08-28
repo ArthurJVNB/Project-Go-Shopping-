@@ -63,7 +63,6 @@ namespace SIM.Character
 
         private void OnNotEnoughMoney(Item item)
         {
-            print("Not enough money");
             notEnoughMoneyUI.ShowUI();
         }
 
