@@ -7,6 +7,7 @@ namespace SIM.Core
     public class Trader : MonoBehaviour
     {
         public Action<Item> onTradeSuccess;
+        public Action<Item> onNotEnoughMoney;
 
         public Inventory Inventory { get; private set; }
 
@@ -38,6 +39,10 @@ namespace SIM.Core
                     // item.gameObject.SetActive(false);
 
                     result = true;
+                }
+                else
+                {
+                    to.onNotEnoughMoney?.Invoke(item);
                 }
             }
 

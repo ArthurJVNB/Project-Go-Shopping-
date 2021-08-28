@@ -20,6 +20,7 @@ namespace SIM.Character
         }
 
         [SerializeField] InventoryUI inventoryUI;
+        [SerializeField] Hint notEnoughMoneyUI;
 
         PlayerActions actions;
         Inventory inventory;
@@ -41,21 +42,29 @@ namespace SIM.Character
 
         private void OnEnable()
         {
+            actions.onStartedTalkingToShopkeeper += StartTalkingToShopkeeperState;
             inventory.onInventoryAddedItem += OnInventoryAddedItem;
             inventoryUI.onItemClicked += InteractWithMyItem;
-            actions.onStartedTalkingToShopkeeper += StartTalkingToShopkeeperState;
+            trader.onNotEnoughMoney += OnNotEnoughMoney;
         }
 
         private void OnDisable()
         {
+            actions.onStartedTalkingToShopkeeper -= StartTalkingToShopkeeperState;
             inventory.onInventoryAddedItem -= OnInventoryAddedItem;
             inventoryUI.onItemClicked -= InteractWithMyItem;
-            actions.onStartedTalkingToShopkeeper -= StartTalkingToShopkeeperState;
+            trader.onNotEnoughMoney -= OnNotEnoughMoney;
         }
 
         private void OnInventoryAddedItem(Item item)
         {
             item.ChangeStateToInventory();
+        }
+
+        private void OnNotEnoughMoney(Item item)
+        {
+            print("Not enough money");
+            notEnoughMoneyUI.ShowUI();
         }
 
         private void InteractWithMyItem(Item item)
@@ -75,10 +84,6 @@ namespace SIM.Character
         private void Equip(Item item)
         {
             equipment.Equip(item);
-            // if (item.Equip(this.trader, out EquipmentSlot slotToPut))
-            // {
-            //     equipment.Equip(item);
-            // }
         }
 
         private bool TryToSell(Item myItem)
