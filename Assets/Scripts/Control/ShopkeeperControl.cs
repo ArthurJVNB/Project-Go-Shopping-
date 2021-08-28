@@ -47,7 +47,6 @@ namespace SIM.Control
         public void Interact(GameObject whoInteracts, out GameObject interacted)
         {
             interacted = gameObject;
-            print("<INVENTORY APPEARS> I supply only the finest goods");
 
             if (whoInteracts.CompareTag(PLAYER_TAG))
             {
@@ -78,7 +77,6 @@ namespace SIM.Control
         private void StartTradingState()
         {
             HideHint();
-            UpdateDistanceFromPlayer();
             inventoryUI.ShowUI();
             currentState = State.Talking;
         }
@@ -96,13 +94,6 @@ namespace SIM.Control
             {
                 StopTradingState();
             }
-        }
-
-        private void UpdateDistanceFromPlayer()
-        {
-            Vector3 playerPosition = GameObject.FindGameObjectWithTag(PLAYER_TAG).transform.position;
-            distanceFromPlayer = Vector3.Distance(playerPosition, transform.position);
-            print("Distance from player: " + distanceFromPlayer);
         }
 
         private void SellToPlayer(Item item)

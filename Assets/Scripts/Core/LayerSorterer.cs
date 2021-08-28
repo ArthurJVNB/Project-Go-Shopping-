@@ -44,6 +44,7 @@ namespace SIM.Core
             if (isStatic) Destroy(this);
         }
 
+#if UNITY_EDITOR
         private void OnDrawGizmosSelected()
         {
             const float SPHERE_RADIUS = .1f;
@@ -59,4 +60,5 @@ namespace SIM.Core
             Gizmos.DrawSphere(position, SPHERE_RADIUS);
         }
     }
+#endif
 }

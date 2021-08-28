@@ -28,9 +28,6 @@ namespace SIM.Movement
 
         private void FixedUpdate()
         {
-            // Vector2 finalPosition = (Vector2)transform.position + velocity * Time.fixedDeltaTime;
-            // rb2d.MovePosition(finalPosition);
-
             rb2d.velocity = velocity;
         }
 

@@ -61,7 +61,6 @@ namespace SIM.Core
 
             if (whoInteracts.CompareTag(PLAYER_TAG) && currentState == State.InGameWorld)
             {
-                // TryToTrade(whoInteracts.GetComponent<Trader>(), out Item _);
                 TryToTrade(whoInteracts.GetComponent<Trader>());
             }
         }
@@ -73,26 +72,6 @@ namespace SIM.Core
         #endregion
 
         #region IEquippable
-        // public bool Equip(Trader whoIsTryingToEquip, out EquipmentSlot slotToPut)
-        // {
-        //     bool result = false;
-        //     slotToPut = EquipmentSlot.None;
-
-        //     if (Owner == whoIsTryingToEquip)
-        //     {
-        //         slotToPut = equipmentSlot;
-        //         UpdateState(State.Equipped);
-        //         result = true;
-        //     }
-
-        //     return result;
-        // }
-
-        // public void Equip(out EquipmentSlot equipmentSlot)
-        // {
-        //     equipmentSlot = this.equipmentSlot;
-        //     UpdateState(State.Equipped);
-        // }
 
         public void Equip()
         {
@@ -102,7 +81,6 @@ namespace SIM.Core
         public void Unequip()
         {
             if (currentState == State.Equipped) UpdateState(previousState);
-            print("Unequipped " + name + " and it's state is " + currentState);
         }
         #endregion
 
@@ -123,33 +101,6 @@ namespace SIM.Core
 
             return result;
         }
-
-        // public bool TryToTrade(Trader buyer, out Item boughtItem)
-        // {
-        //     boughtItem = null;
-        //     bool result = false;
-
-        //     if (!isForSale)
-        //     {
-        //         result = false;
-        //         print(name + " is not for sale!");
-        //     }
-        //     else if (Owner)
-        //     {
-        //         print(name + " has owner (" + Owner.name + ")");
-        //         result = Owner.Trade(this, buyer);
-        //         if (result) boughtItem = this;
-        //     }
-        //     else
-        //     {
-        //         Inventory buyersInventory = buyer.GetComponent<Inventory>();
-        //         result = buyersInventory.SubtractMoney(price);
-        //         if (result) boughtItem = this;
-        //     }
-
-        //     print("Trade " + (result ? "was successful" : "has failed"));
-        //     return result;
-        // }
         #endregion
 
         #region Ownership
@@ -223,6 +174,5 @@ namespace SIM.Core
         {
             hintUI.Text = "Buy " + name + " for $" + Price;
         }
-
     }
 }

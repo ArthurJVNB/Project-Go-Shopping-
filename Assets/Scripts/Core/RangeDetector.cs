@@ -18,7 +18,9 @@ namespace SIM.Core
 
             if (!myCollider2D)
             {
+#if UNITY_EDITOR
                 Debug.LogWarning(this.GetType() + " doesn't have a trigger2D attached to it. It won't work without it!");
+#endif
                 return;
             }
 

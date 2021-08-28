@@ -14,41 +14,26 @@ namespace SIM.Movement
 
     public class PlayerActions : MonoBehaviour
     {
-        // enum State
-        // {
-        //     Default,
-        //     TalkingToShopkeeper
-        // }
-
         public Action<ShopkeeperControl> onStartedTalkingToShopkeeper;
 
         [SerializeField] float maxInteractionDistance = 2f;
-        // [SerializeField] InventoryUI inventoryUI;
 
         PlayerControl input;
         PlayerMovement movement;
-        // Equipment equipment;
-        // Trader trader;
-        // State currentState = State.Default;
-        // ShopkeeperControl shopkeeperImTalking = null;
 
         private void Awake()
         {
             input = GetComponent<PlayerControl>();
             movement = GetComponent<PlayerMovement>();
-            // equipment = GetComponent<Equipment>();
-            // trader = GetComponent<Trader>();
         }
 
         private void OnEnable()
         {
-            // inventoryUI.onItemClicked += InteractWithMyItem;
             input.onPlayerPressedToInteract += OnPlayerPressedToInteract;
         }
 
         private void OnDisable()
         {
-            // inventoryUI.onItemClicked -= InteractWithMyItem;
             input.onPlayerPressedToInteract -= OnPlayerPressedToInteract;
         }
 
@@ -69,69 +54,12 @@ namespace SIM.Movement
                 {
                     if (shopkeeper.CurrentState == ShopkeeperControl.State.Talking)
                     {
-                        // StartTalkingToShopkeeperState(shopkeeper);
                         onStartedTalkingToShopkeeper?.Invoke(shopkeeper);
                     }
                 }
             }
         }
-/*
-        private void InteractWithMyItem(Item item)
-        {
-            if (currentState == State.Default)
-            {
-                Equip(item);
-                return;
-            }
 
-            if (currentState == State.TalkingToShopkeeper)
-            {
-                TryToSell(item);
-            }
-        }
-*/
-/*
-        private void Equip(Item item)
-        {
-            if (item.Equip(this.trader, out EquipmentSlot slotToPut))
-            {
-                // print("I'm equipping " + item.name + " on slot " + slotToPut);
-                equipment.Equip(item);
-            }
-        }
-
-        private bool TryToSell(Item myItem)
-        {
-            bool result = false;
-
-            if (shopkeeperImTalking)
-            {
-                if (shopkeeperImTalking.TryGetComponent<Trader>(out Trader otherTrader))
-                {
-                    result = trader.Trade(myItem, otherTrader);
-                }
-            }
-
-            return result;
-        }
-*/
-/*
-        private void StartTalkingToShopkeeperState(ShopkeeperControl shopkeeper)
-        {
-            currentState = State.TalkingToShopkeeper;
-
-            shopkeeper.onEndedTalking += StopTalkingToShopkeeperState;
-            shopkeeperImTalking = shopkeeper;
-        }
-
-        private void StopTalkingToShopkeeperState()
-        {
-            currentState = State.Default;
-
-            shopkeeperImTalking.onEndedTalking -= StopTalkingToShopkeeperState;
-            shopkeeperImTalking = null;
-        }
-*/
         private bool TryGetInteractable(out IInteractable interactable)
         {
             Vector2 direction = movement.Forward;
@@ -144,20 +72,19 @@ namespace SIM.Movement
 
                 if (hit.transform.TryGetComponent<IInteractable>(out interactable))
                 {
+#if UNITY_EDITOR
                     Debug.DrawLine(transform.position, hit.point, Color.blue, .25f);
+#endif
                     return true;
                 }
             }
 
+#if UNITY_EDITOR
             Debug.DrawRay(transform.position, direction * maxInteractionDistance, Color.yellow);
+#endif
+
             interactable = null;
             return false;
         }
-
-        // private void OnDrawGizmos()
-        // {
-        //     Gizmos.color = Color.blue;
-        //     Gizmos.DrawWireSphere(transform.position, maxInteractionDistance);
-        // }
     }
 }
