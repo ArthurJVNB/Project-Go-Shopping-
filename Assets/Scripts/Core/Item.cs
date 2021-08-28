@@ -45,6 +45,7 @@ namespace SIM.Core
             UpdateState(currentState);
         }
 
+        #region IInteractable
         public void Interact(GameObject whoInteracts, out GameObject interactedGameObject)
         {
             interactedGameObject = gameObject;
@@ -56,6 +57,13 @@ namespace SIM.Core
             }
         }
 
+        public void ShowHint()
+        {
+            if (currentState == State.InGameWorld) hintUI.ShowUI();
+        }
+        #endregion
+        
+        #region IEquippable
         public bool Equip(Trader whoIsTryingToEquip, out EquipmentSlot slotToPut)
         {
             bool result = false;
@@ -70,12 +78,9 @@ namespace SIM.Core
 
             return result;
         }
-
-        public void ShowHint()
-        {
-            if (currentState == State.InGameWorld) hintUI.ShowUI();
-        }
-
+        #endregion
+        
+        #region ITradable
         public Trader GetOwner()
         {
             return owner;
@@ -135,6 +140,7 @@ namespace SIM.Core
         //     print("Trade " + (result ? "was successful" : "has failed"));
         //     return result;
         // }
+        #endregion
 
         private void UpdateHintText()
         {
@@ -165,7 +171,7 @@ namespace SIM.Core
             {
                 collider.enabled = false;
             }
-            
+
             canSaleNow = false;
             spriteRenderer.sprite = equippedImage;
         }
