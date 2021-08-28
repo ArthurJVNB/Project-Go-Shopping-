@@ -79,19 +79,19 @@ namespace SIM.UI
                     currentRow--; // It goes from top to bottom
                 }
 
-                InventoryButton uiItem = Instantiate(slotTemplate, slotsContainer);
-                RectTransform uiItemRect = uiItem.GetComponent<RectTransform>();
+                InventoryButton inventoryItem = Instantiate(slotTemplate, slotsContainer);
+                RectTransform inventoryItemRect = inventoryItem.GetComponent<RectTransform>();
 
                 x = offsetX + cellsInRow * cellSizeX;
                 y = offsetY + currentRow * cellSizeY;
                 Vector2 position = new Vector2(x, y);
 
-                uiItemRect.anchoredPosition = position;
-                uiItemRect.Find("Item preview").GetComponent<Image>().sprite = currentItem.UIImage;
-                uiItemRect.gameObject.SetActive(true);
+                inventoryItemRect.anchoredPosition = position;
+                inventoryItemRect.Find("Item preview").GetComponent<Image>().sprite = currentItem.InventoryImage;
+                inventoryItemRect.gameObject.SetActive(true);
 
-                uiItem.Item = currentItem;
-                uiItem.onClicked += OnItemClicked;
+                inventoryItem.Item = currentItem;
+                inventoryItem.onClicked += OnItemClicked;
 
                 cellsInRow++;
             }

@@ -289,6 +289,26 @@ PrefabInstance:
       propertyPath: hintUI
       value: 
       objectReference: {fileID: 3552456114799558469}
+    - target: {fileID: 2059353763794522469, guid: 567207420cc16d046ae5981862955202, type: 3}
+      propertyPath: worldImage
+      value: 
+      objectReference: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 2059353763794522469, guid: 567207420cc16d046ae5981862955202, type: 3}
+      propertyPath: equipmentSlot
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2059353763794522469, guid: 567207420cc16d046ae5981862955202, type: 3}
+      propertyPath: equippedImage
+      value: 
+      objectReference: {fileID: 10901, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 2059353763794522469, guid: 567207420cc16d046ae5981862955202, type: 3}
+      propertyPath: inventoryImage
+      value: 
+      objectReference: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 2059353763794522469, guid: 567207420cc16d046ae5981862955202, type: 3}
+      propertyPath: spriteRenderer
+      value: 
+      objectReference: {fileID: 403252618432777613}
     - target: {fileID: 3711799049563278592, guid: 567207420cc16d046ae5981862955202, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -354,5 +374,10 @@ PrefabInstance:
 --- !u!4 &403252618432777612 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3711799049563278592, guid: 567207420cc16d046ae5981862955202, type: 3}
+  m_PrefabInstance: {fileID: 3898518103787864204}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &403252618432777613 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 3711799049563278593, guid: 567207420cc16d046ae5981862955202, type: 3}
   m_PrefabInstance: {fileID: 3898518103787864204}
   m_PrefabAsset: {fileID: 0}

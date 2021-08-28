@@ -30,7 +30,7 @@ namespace SIM.Core
                     to.Inventory.Add(item);
 
                     // item.IsInGameWorld = false;
-                    item.gameObject.SetActive(false);
+                    // item.gameObject.SetActive(false);
 
                     result = true;
                 }

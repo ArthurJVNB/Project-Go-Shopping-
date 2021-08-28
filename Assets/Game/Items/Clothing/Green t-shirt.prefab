@@ -63,5 +63,17 @@ PrefabInstance:
       propertyPath: uiImage
       value: 
       objectReference: {fileID: 21300000, guid: f27ff3823eb23524cbf03f89fb82bc1f, type: 3}
+    - target: {fileID: 3066417916458209769, guid: 7d58fefa72c02834688695f43fdd2b89, type: 3}
+      propertyPath: worldImage
+      value: 
+      objectReference: {fileID: 21300000, guid: f27ff3823eb23524cbf03f89fb82bc1f, type: 3}
+    - target: {fileID: 3066417916458209769, guid: 7d58fefa72c02834688695f43fdd2b89, type: 3}
+      propertyPath: equippedImage
+      value: 
+      objectReference: {fileID: 21300000, guid: f27ff3823eb23524cbf03f89fb82bc1f, type: 3}
+    - target: {fileID: 3066417916458209769, guid: 7d58fefa72c02834688695f43fdd2b89, type: 3}
+      propertyPath: inventoryImage
+      value: 
+      objectReference: {fileID: 21300000, guid: f27ff3823eb23524cbf03f89fb82bc1f, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d58fefa72c02834688695f43fdd2b89, type: 3}

@@ -108,7 +108,10 @@ namespace SIM.Movement
 
         private void Equip(Item item)
         {
-            Debug.LogWarning("Equip(Item item) not implemented yet.");
+            if (item.Equip(trader, out EquipmentSlot slotToPut))
+            {
+                print("I'm equipping " + item.name + " on slot " + slotToPut);
+            }
         }
 
         private bool TryToSell(Item myItem)

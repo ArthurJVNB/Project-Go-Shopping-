@@ -6,27 +6,37 @@ using UnityEngine;
 
 namespace SIM.Core
 {
-    public class Item : MonoBehaviour, IInteractable, ITradable
+    public class Item : MonoBehaviour, IInteractable, ITradable, IEquippable<Trader>
     {
+        [Serializable]
+        public enum State
+        {
+            InGameWorld,
+            Equipped,
+            InInventory
+        }
+
         public Action<Trader, Trader> onChangedOwner; // old, new
 
-        public bool IsStackable { get { return isStackable; } }
-        public Sprite UIImage { get { return uiImage; } }
-        public Trader Owner { get; private set; }
+        public Sprite InventoryImage { get { return inventoryImage; } }
+        public Trader Owner { get { return GetOwner(); } private set { SetOwner(value); } }
         public bool IsForSale { get { return isForSale; } }
         public float Price { get { return GetPrice(); } }
-        public bool IsInGameWorld { get { return isInGameWorld; } set { SetIsInGameWorld(value); } }
+        // public bool IsInGameWorld { get { return isInGameWorld; } set { SetIsInGameWorld(value); } }
 
-        [SerializeField] Sprite uiImage;
-        [SerializeField] Sprite worldImage;
+        [SerializeField] Sprite inventoryImage;
+        [SerializeField] Sprite inWorldImage;
         [SerializeField] Sprite equippedImage;
+        [SerializeField] SpriteRenderer spriteRenderer;
         [SerializeField] Hint hintUI;
-        [SerializeField] bool isStackable;
         [SerializeField] bool isForSale = true;
         [SerializeField] float price = 100f;
-        [SerializeField] bool isInGameWorld = true;
+        [SerializeField] State currentState = State.InGameWorld;
+        [SerializeField] EquipmentSlot equipmentSlot;
+        // [SerializeField] bool isInGameWorld = true;
 
         const string PLAYER_TAG = "Player";
+        Trader owner = null;
 
         private void Awake()
         {
@@ -40,44 +50,55 @@ namespace SIM.Core
             if (whoInteracts.CompareTag(PLAYER_TAG) && isForSale)
             {
                 TryToTrade(whoInteracts.GetComponent<Trader>(), out Item _);
+            }
+        }
 
-                // timesPlayerInteractedWithMe++;
+        public bool Equip(Trader whoIsTryingToEquip, out EquipmentSlot slotToPut)
+        {
+            slotToPut = EquipmentSlot.None;
+            bool result = false;
 
-                // if (timesPlayerInteractedWithMe == 1)
-                // {
-                //     ShowBuyWindow();
-                // }
-                // else if (timesPlayerInteractedWithMe > 1)
-                // {
-                //     ResetTimesPlayerInteractedWithMe();
-                //     TryToTrade(whoInteracts.GetComponent<Trader>(), out Item _);
-                // }
+            if (Owner == whoIsTryingToEquip)
+            {
+                slotToPut = equipmentSlot;
+                UpdateState(State.Equipped);
+                result = true;
             }
 
-            // interactedGameObject = null;
+            return result;
+        }
 
-            // if (isForSale && whoInteracts.CompareTag("Player"))
-            // {
-            //     interactedGameObject = gameObject;
-            // }
+        private void UpdateState(State state)
+        {
+            currentState = state;
+            switch (currentState)
+            {
+                case State.Equipped:
+                    spriteRenderer.sprite = equippedImage;
+                    break;
+                case State.InInventory:
+                    spriteRenderer.sprite = inventoryImage;
+                    break;
+                default:
+                    spriteRenderer.sprite = inWorldImage;
+                    break;
+            }
         }
 
         public void ShowHint()
         {
-            // print("<WINDOW APPEARS> Do you want to buy " + name + " for $" + Price + "?");
-            // Buy T-shirt for $1000
             hintUI.ShowUI();
         }
 
         public Trader GetOwner()
         {
-            return Owner;
+            return owner;
         }
 
         public void SetOwner(Trader newOwner)
         {
-            Trader oldOwner = Owner;
-            Owner = newOwner;
+            Trader oldOwner = owner;
+            owner = newOwner;
             onChangedOwner?.Invoke(oldOwner, newOwner);
         }
 
@@ -108,26 +129,9 @@ namespace SIM.Core
                 result = buyersInventory.SubtractMoney(price);
                 if (result) boughtItem = this;
             }
-
+            
             print("Trade " + (result ? "was successful" : "has failed"));
             return result;
-
-            // Inventory ownersInventory = null;
-            // if (Owner) { ownersInventory = Owner.GetComponent<Inventory>(); }
-            // Inventory buyersInventory = buyer.GetComponent<Inventory>();
-
-            // if (buyersInventory.Money == price)
-            // {
-            //     if (ownersInventory) { ownersInventory.AddMoney(buyersInventory.Money); }
-            //     buyersInventory.SubtractMoney(price);
-
-            //     boughtItem = this;
-            //     SetOwner(buyer);
-            //     return true;
-            // }
-
-            // boughtItem = null;
-            // return false;
         }
 
         private void UpdateHintText()
@@ -135,10 +139,10 @@ namespace SIM.Core
             hintUI.Text = "Buy " + name + " for $" + Price;
         }
 
-        private void SetIsInGameWorld(bool value)
-        {
-            isInGameWorld = value;
-            GetComponent<SpriteRenderer>().enabled = value;
-        }
+        // private void SetIsInGameWorld(bool value)
+        // {
+        //     isInGameWorld = value;
+        //     GetComponent<SpriteRenderer>().enabled = value;
+        // }
     }
 }
