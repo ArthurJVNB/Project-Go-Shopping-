@@ -21,7 +21,7 @@ namespace SIM.Core
         {
             bool result = false;
 
-            if (Inventory.Contains(item))
+            if (item.CanSale && Inventory.Contains(item))
             {
                 if (to.Inventory.SubtractMoney(item.Price))
                 {

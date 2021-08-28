@@ -20,12 +20,12 @@ namespace SIM.Core
 
         public Sprite InventoryImage { get { return inventoryImage; } }
         public Trader Owner { get { return GetOwner(); } private set { SetOwner(value); } }
-        public bool IsForSale { get { return isForSale; } }
+        public bool CanSale { get { return canSaleNow; } }
         public float Price { get { return GetPrice(); } }
         // public bool IsInGameWorld { get { return isInGameWorld; } set { SetIsInGameWorld(value); } }
 
+        [SerializeField] Sprite worldImage;
         [SerializeField] Sprite inventoryImage;
-        [SerializeField] Sprite inWorldImage;
         [SerializeField] Sprite equippedImage;
         [SerializeField] SpriteRenderer spriteRenderer;
         [SerializeField] Hint hintUI;
@@ -36,27 +36,30 @@ namespace SIM.Core
         // [SerializeField] bool isInGameWorld = true;
 
         const string PLAYER_TAG = "Player";
+        bool canSaleNow;
         Trader owner = null;
 
         private void Awake()
         {
             UpdateHintText();
+            UpdateState(currentState);
         }
 
         public void Interact(GameObject whoInteracts, out GameObject interactedGameObject)
         {
             interactedGameObject = gameObject;
 
-            if (whoInteracts.CompareTag(PLAYER_TAG) && isForSale)
+            if (whoInteracts.CompareTag(PLAYER_TAG) && currentState == State.InGameWorld)
             {
-                TryToTrade(whoInteracts.GetComponent<Trader>(), out Item _);
+                // TryToTrade(whoInteracts.GetComponent<Trader>(), out Item _);
+                TryToTrade(whoInteracts.GetComponent<Trader>());
             }
         }
 
         public bool Equip(Trader whoIsTryingToEquip, out EquipmentSlot slotToPut)
         {
-            slotToPut = EquipmentSlot.None;
             bool result = false;
+            slotToPut = EquipmentSlot.None;
 
             if (Owner == whoIsTryingToEquip)
             {
@@ -68,26 +71,9 @@ namespace SIM.Core
             return result;
         }
 
-        private void UpdateState(State state)
-        {
-            currentState = state;
-            switch (currentState)
-            {
-                case State.Equipped:
-                    spriteRenderer.sprite = equippedImage;
-                    break;
-                case State.InInventory:
-                    spriteRenderer.sprite = inventoryImage;
-                    break;
-                default:
-                    spriteRenderer.sprite = inWorldImage;
-                    break;
-            }
-        }
-
         public void ShowHint()
         {
-            hintUI.ShowUI();
+            if (currentState == State.InGameWorld) hintUI.ShowUI();
         }
 
         public Trader GetOwner()
@@ -107,36 +93,93 @@ namespace SIM.Core
             return price;
         }
 
-        public bool TryToTrade(Trader buyer, out Item boughtItem)
+        public bool TryToTrade(Trader buyer)
         {
-            boughtItem = null;
             bool result = false;
 
-            if (!isForSale)
+            if (canSaleNow && Owner)
             {
-                result = false;
-                print(name + " is not for sale!");
+                if (Owner.Trade(this, buyer))
+                {
+                    UpdateState(State.InInventory);
+                    result = true;
+                }
             }
-            else if (Owner)
-            {
-                print(name + " has owner (" + Owner.name + ")");
-                result = Owner.Trade(this, buyer);
-                if (result) boughtItem = this;
-            }
-            else
-            {
-                Inventory buyersInventory = buyer.GetComponent<Inventory>();
-                result = buyersInventory.SubtractMoney(price);
-                if (result) boughtItem = this;
-            }
-            
-            print("Trade " + (result ? "was successful" : "has failed"));
+
             return result;
         }
+
+        // public bool TryToTrade(Trader buyer, out Item boughtItem)
+        // {
+        //     boughtItem = null;
+        //     bool result = false;
+
+        //     if (!isForSale)
+        //     {
+        //         result = false;
+        //         print(name + " is not for sale!");
+        //     }
+        //     else if (Owner)
+        //     {
+        //         print(name + " has owner (" + Owner.name + ")");
+        //         result = Owner.Trade(this, buyer);
+        //         if (result) boughtItem = this;
+        //     }
+        //     else
+        //     {
+        //         Inventory buyersInventory = buyer.GetComponent<Inventory>();
+        //         result = buyersInventory.SubtractMoney(price);
+        //         if (result) boughtItem = this;
+        //     }
+
+        //     print("Trade " + (result ? "was successful" : "has failed"));
+        //     return result;
+        // }
 
         private void UpdateHintText()
         {
             hintUI.Text = "Buy " + name + " for $" + Price;
+        }
+
+        private void UpdateState(State state)
+        {
+            currentState = state;
+            switch (currentState)
+            {
+                case State.Equipped:
+                    SetStateToEquipped();
+                    break;
+                case State.InInventory:
+                    SetStateToInventory();
+                    break;
+                default:
+                    SetStateToWorld();
+                    break;
+            }
+        }
+
+        private void SetStateToEquipped()
+        {
+            canSaleNow = false;
+            spriteRenderer.sprite = equippedImage;
+            Collider2D[] colliders = GetComponents<Collider2D>();
+            foreach (Collider2D collider in colliders)
+            {
+                collider.enabled = false;
+            }
+        }
+
+        private void SetStateToInventory()
+        {
+            canSaleNow = isForSale;
+            spriteRenderer.sprite = inventoryImage;
+            gameObject.SetActive(false);
+        }
+
+        private void SetStateToWorld()
+        {
+            spriteRenderer.sprite = worldImage;
+            canSaleNow = isForSale;
         }
 
         // private void SetIsInGameWorld(bool value)
