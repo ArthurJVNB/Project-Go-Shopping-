@@ -16,13 +16,13 @@ namespace SIM.Core
             InInventory
         }
 
+        /// <sumary>  </sumary>
         public Action<Trader, Trader> onChangedOwner; // old, new
 
         public Sprite InventoryImage { get { return inventoryImage; } }
-        public Trader Owner { get { return GetOwner(); } private set { SetOwner(value); } }
+        public Trader Owner { get { return GetOwner(); } set { SetOwner(value); } }
         public bool CanSale { get { return canSaleNow; } }
         public float Price { get { return GetPrice(); } }
-        // public bool IsInGameWorld { get { return isInGameWorld; } set { SetIsInGameWorld(value); } }
 
         [SerializeField] Sprite worldImage;
         [SerializeField] Sprite inventoryImage;
@@ -33,7 +33,6 @@ namespace SIM.Core
         [SerializeField] float price = 100f;
         [SerializeField] State currentState = State.InGameWorld;
         [SerializeField] EquipmentSlot equipmentSlot;
-        // [SerializeField] bool isInGameWorld = true;
 
         const string PLAYER_TAG = "Player";
         bool canSaleNow;
@@ -62,7 +61,7 @@ namespace SIM.Core
             if (currentState == State.InGameWorld) hintUI.ShowUI();
         }
         #endregion
-        
+
         #region IEquippable
         public bool Equip(Trader whoIsTryingToEquip, out EquipmentSlot slotToPut)
         {
@@ -79,20 +78,8 @@ namespace SIM.Core
             return result;
         }
         #endregion
-        
+
         #region ITradable
-        public Trader GetOwner()
-        {
-            return owner;
-        }
-
-        public void SetOwner(Trader newOwner)
-        {
-            Trader oldOwner = owner;
-            owner = newOwner;
-            onChangedOwner?.Invoke(oldOwner, newOwner);
-        }
-
         public float GetPrice()
         {
             return price;
@@ -142,11 +129,21 @@ namespace SIM.Core
         // }
         #endregion
 
-        private void UpdateHintText()
+        #region Ownership
+        private Trader GetOwner()
         {
-            hintUI.Text = "Buy " + name + " for $" + Price;
+            return owner;
         }
 
+        private void SetOwner(Trader newOwner)
+        {
+            Trader oldOwner = owner;
+            owner = newOwner;
+            onChangedOwner?.Invoke(oldOwner, newOwner);
+        }
+        #endregion
+
+        #region State
         private void UpdateState(State state)
         {
             currentState = state;
@@ -195,11 +192,12 @@ namespace SIM.Core
             canSaleNow = isForSale;
             spriteRenderer.sprite = worldImage;
         }
+        #endregion
 
-        // private void SetIsInGameWorld(bool value)
-        // {
-        //     isInGameWorld = value;
-        //     GetComponent<SpriteRenderer>().enabled = value;
-        // }
+        private void UpdateHintText()
+        {
+            hintUI.Text = "Buy " + name + " for $" + Price;
+        }
+
     }
 }

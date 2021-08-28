@@ -621,10 +621,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6234009097238693905, guid: 84de459224c1df849a4c57b9dcbe578e, type: 3}
-      propertyPath: price
-      value: 150
-      objectReference: {fileID: 0}
     - target: {fileID: 8760936108390044776, guid: 84de459224c1df849a4c57b9dcbe578e, type: 3}
       propertyPath: m_Name
       value: Rare t-shirt
@@ -940,10 +936,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4930811285102160601, guid: cb20e9874a5d88b44aff6f255cf191bd, type: 3}
-      propertyPath: price
-      value: 50
-      objectReference: {fileID: 0}
     - target: {fileID: 7744920850709378720, guid: cb20e9874a5d88b44aff6f255cf191bd, type: 3}
       propertyPath: m_Name
       value: Ragged t-shirt

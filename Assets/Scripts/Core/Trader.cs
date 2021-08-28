@@ -44,7 +44,7 @@ namespace SIM.Core
             Item[] items = Inventory.GetItems();
             foreach (Item item in items)
             {
-                item.SetOwner(this);
+                item.Owner = this;
             }
         }
     }
