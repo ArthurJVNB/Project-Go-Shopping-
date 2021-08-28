@@ -9,6 +9,7 @@ namespace SIM.Movement
 {
     [RequireComponent(typeof(PlayerControl))]
     [RequireComponent(typeof(PlayerMovement))]
+    [RequireComponent(typeof(Equipment))]
     [RequireComponent(typeof(Trader))]
 
     public class PlayerActions : MonoBehaviour
@@ -24,6 +25,7 @@ namespace SIM.Movement
 
         PlayerControl input;
         PlayerMovement movement;
+        Equipment equipment;
         Trader trader;
         State currentState = State.Default;
         ShopkeeperControl shopkeeperImTalking = null;
@@ -32,6 +34,7 @@ namespace SIM.Movement
         {
             input = GetComponent<PlayerControl>();
             movement = GetComponent<PlayerMovement>();
+            equipment = GetComponent<Equipment>();
             trader = GetComponent<Trader>();
         }
 
@@ -108,9 +111,10 @@ namespace SIM.Movement
 
         private void Equip(Item item)
         {
-            if (item.Equip(trader, out EquipmentSlot slotToPut))
+            if (item.Equip(this.trader, out EquipmentSlot slotToPut))
             {
-                print("I'm equipping " + item.name + " on slot " + slotToPut);
+                // print("I'm equipping " + item.name + " on slot " + slotToPut);
+                equipment.Equip(item);
             }
         }
 

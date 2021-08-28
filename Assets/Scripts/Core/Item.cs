@@ -16,11 +16,15 @@ namespace SIM.Core
             InInventory
         }
 
-        /// <sumary>  </sumary>
         public Action<Trader, Trader> onChangedOwner; // old, new
+        public Action<Item> onChangedState;
 
+        public Sprite WorldImage { get { return worldImage; } }
         public Sprite InventoryImage { get { return inventoryImage; } }
+        public Sprite EquipedImage { get { return equippedImage; } }
+        public EquipmentSlot EquipmentSlot { get { return equipmentSlot; } }
         public Trader Owner { get { return GetOwner(); } set { SetOwner(value); } }
+        public State CurrentState { get { return currentState; } }
         public bool CanSale { get { return canSaleNow; } }
         public float Price { get { return GetPrice(); } }
 
@@ -37,11 +41,17 @@ namespace SIM.Core
         const string PLAYER_TAG = "Player";
         bool canSaleNow;
         Trader owner = null;
+        State previousState;
 
         private void Awake()
         {
             UpdateHintText();
             UpdateState(currentState);
+        }
+
+        public void ChangeStateToInventory()
+        {
+            UpdateState(State.InInventory);
         }
 
         #region IInteractable
@@ -77,6 +87,12 @@ namespace SIM.Core
 
             return result;
         }
+
+        public void Unequip()
+        {
+            if (currentState == State.Equipped) UpdateState(previousState);
+            print("Unequipped " + name + " and it's state is " + currentState);
+        }
         #endregion
 
         #region ITradable
@@ -91,11 +107,7 @@ namespace SIM.Core
 
             if (canSaleNow && Owner)
             {
-                if (Owner.Trade(this, buyer))
-                {
-                    UpdateState(State.InInventory);
-                    result = true;
-                }
+                result = Owner.Trade(this, buyer);
             }
 
             return result;
@@ -146,6 +158,7 @@ namespace SIM.Core
         #region State
         private void UpdateState(State state)
         {
+            previousState = currentState;
             currentState = state;
             switch (currentState)
             {
@@ -159,6 +172,7 @@ namespace SIM.Core
                     SetStateToWorld();
                     break;
             }
+            onChangedState?.Invoke(this);
         }
 
         private void SetStateToEquipped()

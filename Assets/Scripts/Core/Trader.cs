@@ -27,6 +27,8 @@ namespace SIM.Core
                 {
                     Inventory.AddMoney(item.Price);
                     Inventory.Remove(item);
+                    
+                    item.ChangeStateToInventory();
                     to.Inventory.Add(item);
 
                     // item.IsInGameWorld = false;

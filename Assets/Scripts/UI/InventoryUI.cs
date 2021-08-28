@@ -68,7 +68,7 @@ namespace SIM.UI
 
             UpdateMoneyAmount();
 
-            Item[] items = inventory.GetItems();
+            Item[] items = inventory.GetItems(Item.State.InInventory);
             for (int i = 0; i < items.Length; i++)
             {
                 Item currentItem = items[i];
