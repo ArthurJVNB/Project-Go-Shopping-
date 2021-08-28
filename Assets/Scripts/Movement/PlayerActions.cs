@@ -14,39 +14,41 @@ namespace SIM.Movement
 
     public class PlayerActions : MonoBehaviour
     {
-        enum State
-        {
-            Default,
-            TalkingToShopkeeper
-        }
+        // enum State
+        // {
+        //     Default,
+        //     TalkingToShopkeeper
+        // }
+
+        public Action<ShopkeeperControl> onStartedTalkingToShopkeeper;
 
         [SerializeField] float maxInteractionDistance = 2f;
-        [SerializeField] InventoryUI inventoryUI;
+        // [SerializeField] InventoryUI inventoryUI;
 
         PlayerControl input;
         PlayerMovement movement;
-        Equipment equipment;
-        Trader trader;
-        State currentState = State.Default;
-        ShopkeeperControl shopkeeperImTalking = null;
+        // Equipment equipment;
+        // Trader trader;
+        // State currentState = State.Default;
+        // ShopkeeperControl shopkeeperImTalking = null;
 
         private void Awake()
         {
             input = GetComponent<PlayerControl>();
             movement = GetComponent<PlayerMovement>();
-            equipment = GetComponent<Equipment>();
-            trader = GetComponent<Trader>();
+            // equipment = GetComponent<Equipment>();
+            // trader = GetComponent<Trader>();
         }
 
         private void OnEnable()
         {
-            inventoryUI.onItemClicked += InteractWithMyItem;
+            // inventoryUI.onItemClicked += InteractWithMyItem;
             input.onPlayerPressedToInteract += OnPlayerPressedToInteract;
         }
 
         private void OnDisable()
         {
-            inventoryUI.onItemClicked -= InteractWithMyItem;
+            // inventoryUI.onItemClicked -= InteractWithMyItem;
             input.onPlayerPressedToInteract -= OnPlayerPressedToInteract;
         }
 
@@ -67,34 +69,13 @@ namespace SIM.Movement
                 {
                     if (shopkeeper.CurrentState == ShopkeeperControl.State.Talking)
                     {
-                        StartTalkingToShopkeeperState(shopkeeper);
+                        // StartTalkingToShopkeeperState(shopkeeper);
+                        onStartedTalkingToShopkeeper?.Invoke(shopkeeper);
                     }
                 }
             }
         }
-
-        private bool TryGetInteractable(out IInteractable interactable)
-        {
-            Vector2 direction = movement.Forward;
-            Ray ray = new Ray(transform.position, direction);
-
-            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, maxInteractionDistance);
-            foreach (RaycastHit2D hit in hits)
-            {
-                if (hit.transform.gameObject.Equals(this.gameObject)) continue; // Typed "this.gameObject" to be more explicit for the reader.
-
-                if (hit.transform.TryGetComponent<IInteractable>(out interactable))
-                {
-                    Debug.DrawLine(transform.position, hit.point, Color.blue, .25f);
-                    return true;
-                }
-            }
-
-            Debug.DrawRay(transform.position, direction * maxInteractionDistance, Color.yellow);
-            interactable = null;
-            return false;
-        }
-
+/*
         private void InteractWithMyItem(Item item)
         {
             if (currentState == State.Default)
@@ -108,7 +89,8 @@ namespace SIM.Movement
                 TryToSell(item);
             }
         }
-
+*/
+/*
         private void Equip(Item item)
         {
             if (item.Equip(this.trader, out EquipmentSlot slotToPut))
@@ -132,7 +114,8 @@ namespace SIM.Movement
 
             return result;
         }
-
+*/
+/*
         private void StartTalkingToShopkeeperState(ShopkeeperControl shopkeeper)
         {
             currentState = State.TalkingToShopkeeper;
@@ -147,6 +130,28 @@ namespace SIM.Movement
 
             shopkeeperImTalking.onEndedTalking -= StopTalkingToShopkeeperState;
             shopkeeperImTalking = null;
+        }
+*/
+        private bool TryGetInteractable(out IInteractable interactable)
+        {
+            Vector2 direction = movement.Forward;
+            Ray ray = new Ray(transform.position, direction);
+
+            RaycastHit2D[] hits = Physics2D.RaycastAll(transform.position, direction, maxInteractionDistance);
+            foreach (RaycastHit2D hit in hits)
+            {
+                if (hit.transform.gameObject.Equals(this.gameObject)) continue; // Typed "this.gameObject" to be more explicit for the reader.
+
+                if (hit.transform.TryGetComponent<IInteractable>(out interactable))
+                {
+                    Debug.DrawLine(transform.position, hit.point, Color.blue, .25f);
+                    return true;
+                }
+            }
+
+            Debug.DrawRay(transform.position, direction * maxInteractionDistance, Color.yellow);
+            interactable = null;
+            return false;
         }
 
         // private void OnDrawGizmos()
