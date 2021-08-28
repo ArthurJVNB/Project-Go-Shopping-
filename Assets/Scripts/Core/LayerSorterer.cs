@@ -59,6 +59,6 @@ namespace SIM.Core
             Gizmos.color = Color.red;
             Gizmos.DrawSphere(position, SPHERE_RADIUS);
         }
-    }
 #endif
+    }
 }
