@@ -160,26 +160,34 @@ namespace SIM.Core
 
         private void SetStateToEquipped()
         {
-            canSaleNow = false;
-            spriteRenderer.sprite = equippedImage;
             Collider2D[] colliders = GetComponents<Collider2D>();
             foreach (Collider2D collider in colliders)
             {
                 collider.enabled = false;
             }
+            
+            canSaleNow = false;
+            spriteRenderer.sprite = equippedImage;
         }
 
         private void SetStateToInventory()
         {
+            gameObject.SetActive(false);
+
             canSaleNow = isForSale;
             spriteRenderer.sprite = inventoryImage;
-            gameObject.SetActive(false);
         }
 
         private void SetStateToWorld()
         {
-            spriteRenderer.sprite = worldImage;
+            Collider2D[] colliders = GetComponents<Collider2D>();
+            foreach (Collider2D collider in colliders)
+            {
+                collider.enabled = true;
+            }
+
             canSaleNow = isForSale;
+            spriteRenderer.sprite = worldImage;
         }
 
         // private void SetIsInGameWorld(bool value)
