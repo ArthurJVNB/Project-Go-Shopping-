@@ -5,6 +5,6 @@ namespace SIM.Core
         Trader GetOwner();
         void SetOwner(Trader newOwner);
         float GetPrice();
-        bool TryToTrade(Trader buyer, out Item boughtItem);
+        bool TryToTrade(Trader buyer);
     }
 }

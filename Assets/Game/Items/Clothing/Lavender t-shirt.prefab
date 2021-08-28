@@ -60,13 +60,21 @@ PrefabInstance:
       value: Lavender t-shirt
       objectReference: {fileID: 0}
     - target: {fileID: 3066417916458209769, guid: 7d58fefa72c02834688695f43fdd2b89, type: 3}
+      propertyPath: price
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 3066417916458209769, guid: 7d58fefa72c02834688695f43fdd2b89, type: 3}
       propertyPath: uiImage
       value: 
       objectReference: {fileID: 21300000, guid: 872e9aa566573c945a996dce9146b9cf, type: 3}
     - target: {fileID: 3066417916458209769, guid: 7d58fefa72c02834688695f43fdd2b89, type: 3}
       propertyPath: worldImage
       value: 
-      objectReference: {fileID: 21300000, guid: 872e9aa566573c945a996dce9146b9cf, type: 3}
+      objectReference: {fileID: 21300000, guid: a4b70d9ced94ce148ad48bda3ec36e5f, type: 3}
+    - target: {fileID: 3066417916458209769, guid: 7d58fefa72c02834688695f43fdd2b89, type: 3}
+      propertyPath: inWorldImage
+      value: 
+      objectReference: {fileID: 10915, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 3066417916458209769, guid: 7d58fefa72c02834688695f43fdd2b89, type: 3}
       propertyPath: equippedImage
       value: 
@@ -74,6 +82,6 @@ PrefabInstance:
     - target: {fileID: 3066417916458209769, guid: 7d58fefa72c02834688695f43fdd2b89, type: 3}
       propertyPath: inventoryImage
       value: 
-      objectReference: {fileID: 21300000, guid: 872e9aa566573c945a996dce9146b9cf, type: 3}
+      objectReference: {fileID: 21300000, guid: f27ff3823eb23524cbf03f89fb82bc1f, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d58fefa72c02834688695f43fdd2b89, type: 3}
