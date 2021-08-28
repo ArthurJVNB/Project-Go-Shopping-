@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace SIM.Core
@@ -5,6 +6,8 @@ namespace SIM.Core
     [RequireComponent(typeof(Inventory))]
     public class Trader : MonoBehaviour
     {
+        public Action<Item> onTradeSuccess;
+
         public Inventory Inventory { get; private set; }
 
         private void Awake()
@@ -21,21 +24,25 @@ namespace SIM.Core
         {
             bool result = false;
 
-            if (Inventory.Contains(item))
+            if (item.CanSale && Inventory.Contains(item))
             {
                 if (to.Inventory.SubtractMoney(item.Price))
                 {
                     Inventory.AddMoney(item.Price);
                     Inventory.Remove(item);
+                    
+                    // item.ChangeStateToInventory();
                     to.Inventory.Add(item);
 
                     // item.IsInGameWorld = false;
-                    item.gameObject.SetActive(false);
+                    // item.gameObject.SetActive(false);
 
                     result = true;
                 }
             }
 
+            if (result) onTradeSuccess?.Invoke(item);
+            
             return result;
         }
 
@@ -44,7 +51,7 @@ namespace SIM.Core
             Item[] items = Inventory.GetItems();
             foreach (Item item in items)
             {
-                item.SetOwner(this);
+                item.Owner = this;
             }
         }
     }

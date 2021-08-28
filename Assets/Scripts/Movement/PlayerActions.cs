@@ -9,41 +9,46 @@ namespace SIM.Movement
 {
     [RequireComponent(typeof(PlayerControl))]
     [RequireComponent(typeof(PlayerMovement))]
+    [RequireComponent(typeof(Equipment))]
     [RequireComponent(typeof(Trader))]
 
     public class PlayerActions : MonoBehaviour
     {
-        enum State
-        {
-            Default,
-            TalkingToShopkeeper
-        }
+        // enum State
+        // {
+        //     Default,
+        //     TalkingToShopkeeper
+        // }
+
+        public Action<ShopkeeperControl> onStartedTalkingToShopkeeper;
 
         [SerializeField] float maxInteractionDistance = 2f;
-        [SerializeField] InventoryUI inventoryUI;
+        // [SerializeField] InventoryUI inventoryUI;
 
         PlayerControl input;
         PlayerMovement movement;
-        Trader trader;
-        State currentState = State.Default;
-        ShopkeeperControl shopkeeperImTalking = null;
+        // Equipment equipment;
+        // Trader trader;
+        // State currentState = State.Default;
+        // ShopkeeperControl shopkeeperImTalking = null;
 
         private void Awake()
         {
             input = GetComponent<PlayerControl>();
             movement = GetComponent<PlayerMovement>();
-            trader = GetComponent<Trader>();
+            // equipment = GetComponent<Equipment>();
+            // trader = GetComponent<Trader>();
         }
 
         private void OnEnable()
         {
-            inventoryUI.onItemClicked += InteractWithMyItem;
+            // inventoryUI.onItemClicked += InteractWithMyItem;
             input.onPlayerPressedToInteract += OnPlayerPressedToInteract;
         }
 
         private void OnDisable()
         {
-            inventoryUI.onItemClicked -= InteractWithMyItem;
+            // inventoryUI.onItemClicked -= InteractWithMyItem;
             input.onPlayerPressedToInteract -= OnPlayerPressedToInteract;
         }
 
@@ -64,12 +69,69 @@ namespace SIM.Movement
                 {
                     if (shopkeeper.CurrentState == ShopkeeperControl.State.Talking)
                     {
-                        StartTalkingToShopkeeperState(shopkeeper);
+                        // StartTalkingToShopkeeperState(shopkeeper);
+                        onStartedTalkingToShopkeeper?.Invoke(shopkeeper);
                     }
                 }
             }
         }
+/*
+        private void InteractWithMyItem(Item item)
+        {
+            if (currentState == State.Default)
+            {
+                Equip(item);
+                return;
+            }
 
+            if (currentState == State.TalkingToShopkeeper)
+            {
+                TryToSell(item);
+            }
+        }
+*/
+/*
+        private void Equip(Item item)
+        {
+            if (item.Equip(this.trader, out EquipmentSlot slotToPut))
+            {
+                // print("I'm equipping " + item.name + " on slot " + slotToPut);
+                equipment.Equip(item);
+            }
+        }
+
+        private bool TryToSell(Item myItem)
+        {
+            bool result = false;
+
+            if (shopkeeperImTalking)
+            {
+                if (shopkeeperImTalking.TryGetComponent<Trader>(out Trader otherTrader))
+                {
+                    result = trader.Trade(myItem, otherTrader);
+                }
+            }
+
+            return result;
+        }
+*/
+/*
+        private void StartTalkingToShopkeeperState(ShopkeeperControl shopkeeper)
+        {
+            currentState = State.TalkingToShopkeeper;
+
+            shopkeeper.onEndedTalking += StopTalkingToShopkeeperState;
+            shopkeeperImTalking = shopkeeper;
+        }
+
+        private void StopTalkingToShopkeeperState()
+        {
+            currentState = State.Default;
+
+            shopkeeperImTalking.onEndedTalking -= StopTalkingToShopkeeperState;
+            shopkeeperImTalking = null;
+        }
+*/
         private bool TryGetInteractable(out IInteractable interactable)
         {
             Vector2 direction = movement.Forward;
@@ -90,56 +152,6 @@ namespace SIM.Movement
             Debug.DrawRay(transform.position, direction * maxInteractionDistance, Color.yellow);
             interactable = null;
             return false;
-        }
-
-        private void InteractWithMyItem(Item item)
-        {
-            if (currentState == State.Default)
-            {
-                Equip(item);
-                return;
-            }
-
-            if (currentState == State.TalkingToShopkeeper)
-            {
-                TryToSell(item);
-            }
-        }
-
-        private void Equip(Item item)
-        {
-            Debug.LogWarning("Equip(Item item) not implemented yet.");
-        }
-
-        private bool TryToSell(Item myItem)
-        {
-            bool result = false;
-
-            if (shopkeeperImTalking)
-            {
-                if (shopkeeperImTalking.TryGetComponent<Trader>(out Trader otherTrader))
-                {
-                    result = trader.Trade(myItem, otherTrader);
-                }
-            }
-
-            return result;
-        }
-
-        private void StartTalkingToShopkeeperState(ShopkeeperControl shopkeeper)
-        {
-            currentState = State.TalkingToShopkeeper;
-
-            shopkeeper.onEndedTalking += StopTalkingToShopkeeperState;
-            shopkeeperImTalking = shopkeeper;
-        }
-
-        private void StopTalkingToShopkeeperState()
-        {
-            currentState = State.Default;
-
-            shopkeeperImTalking.onEndedTalking -= StopTalkingToShopkeeperState;
-            shopkeeperImTalking = null;
         }
 
         // private void OnDrawGizmos()

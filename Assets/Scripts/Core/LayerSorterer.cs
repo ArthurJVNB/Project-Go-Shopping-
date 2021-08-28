@@ -31,11 +31,11 @@ namespace SIM.Core
 
         private void UpdateSortingLayer()
         {
-            const float SPREAD_RESULT = 50f;
+            const float SPREAD_RESULT = 1000f;
             float order;
 
-            if (useLocalScaleY) { order = (-transform.position.y + transform.localScale.y * offsetY); }
-            else { order = (-transform.position.y + offsetY); }
+            if (useLocalScaleY) { order = -(transform.position.y + transform.localScale.y * offsetY); }
+            else { order = -(transform.position.y + offsetY); }
 
             order *= SPREAD_RESULT;
 
