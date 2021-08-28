@@ -74,10 +74,11 @@ namespace SIM.Character
 
         private void Equip(Item item)
         {
-            if (item.Equip(this.trader, out EquipmentSlot slotToPut))
-            {
-                equipment.Equip(item);
-            }
+            equipment.Equip(item);
+            // if (item.Equip(this.trader, out EquipmentSlot slotToPut))
+            // {
+            //     equipment.Equip(item);
+            // }
         }
 
         private bool TryToSell(Item myItem)

@@ -7,18 +7,23 @@ namespace SIM.Core
         [SerializeField] SpriteRenderer torsoSlot;
         [SerializeField] SpriteRenderer legsSlot;
 
+        Item torsoItem;
+        Item legsItem;
+
         public void Equip(Item item)
         {
+            item.Equip();
+
             EquipmentSlot slot = item.EquipmentSlot;
             Sprite spriteToUse = item.EquipedImage;
 
             switch (slot)
             {
                 case EquipmentSlot.Torso:
-                    EquipTorso(spriteToUse);
+                    EquipTorso(item, spriteToUse);
                     break;
                 case EquipmentSlot.Legs:
-                    EquipLegs(spriteToUse);
+                    EquipLegs(item, spriteToUse);
                     break;
                 default:
                     break;
@@ -27,6 +32,8 @@ namespace SIM.Core
 
         public void Unequip(Item item)
         {
+            if (item == null) return;
+
             item.Unequip();
 
             switch (item.EquipmentSlot)
@@ -42,24 +49,31 @@ namespace SIM.Core
             }
         }
 
-        private void EquipTorso(Sprite sprite)
+        private void EquipTorso(Item item, Sprite sprite)
         {
+            if (torsoItem) Unequip(torsoItem);
+            torsoItem = item;
             torsoSlot.sprite = sprite;
         }
 
         private void UnequipTorso()
         {
+            torsoItem = null;
             torsoSlot.sprite = null;
         }
 
-        private void EquipLegs(Sprite sprite)
+        private void EquipLegs(Item item, Sprite sprite)
         {
+            if (legsItem) Unequip(legsItem);
+            legsItem = item;
             legsSlot.sprite = sprite;
         }
 
         private void UnequipLegs()
         {
+            legsItem = null;
             legsSlot.sprite = null;
         }
+
     }
 }

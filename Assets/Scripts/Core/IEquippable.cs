@@ -2,7 +2,9 @@ namespace SIM.Core
 {
     public interface IEquippable<T>
     {
-        bool Equip(T whoIsTryingToEquip, out EquipmentSlot slotToPut);
+        void Equip();
+        // void Equip(out EquipmentSlot equipmentSlot);
+        // bool Equip(T whoIsTryingToEquip, out EquipmentSlot slotToPut);
         void Unequip();
     }
 }

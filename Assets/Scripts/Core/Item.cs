@@ -73,19 +73,30 @@ namespace SIM.Core
         #endregion
 
         #region IEquippable
-        public bool Equip(Trader whoIsTryingToEquip, out EquipmentSlot slotToPut)
+        // public bool Equip(Trader whoIsTryingToEquip, out EquipmentSlot slotToPut)
+        // {
+        //     bool result = false;
+        //     slotToPut = EquipmentSlot.None;
+
+        //     if (Owner == whoIsTryingToEquip)
+        //     {
+        //         slotToPut = equipmentSlot;
+        //         UpdateState(State.Equipped);
+        //         result = true;
+        //     }
+
+        //     return result;
+        // }
+
+        // public void Equip(out EquipmentSlot equipmentSlot)
+        // {
+        //     equipmentSlot = this.equipmentSlot;
+        //     UpdateState(State.Equipped);
+        // }
+
+        public void Equip()
         {
-            bool result = false;
-            slotToPut = EquipmentSlot.None;
-
-            if (Owner == whoIsTryingToEquip)
-            {
-                slotToPut = equipmentSlot;
-                UpdateState(State.Equipped);
-                result = true;
-            }
-
-            return result;
+            UpdateState(State.Equipped);
         }
 
         public void Unequip()
