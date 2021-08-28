@@ -11,7 +11,6 @@ namespace SIM.Core
         public float Money { get { return moneyAmount; } }
 
         [SerializeField] float moneyAmount;
-        [SerializeField] Item moneyPrefab;
         [SerializeField] List<Item> items = new List<Item>();
 
         private void Start()
